@@ -26,7 +26,7 @@ class LatestTweetsFetcher
             throw new TwitterException('Received empty data from api.twitter.com');
         }
 
-        $data = json_decode($data);
+        $data = json_decode($data, true);
 
         if (null === $data) {
             throw new TwitterException('Unable to decode data from api.twitter.com');

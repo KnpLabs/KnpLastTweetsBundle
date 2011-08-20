@@ -10,9 +10,9 @@ class Tweet
     protected $isReply;
     protected $username;
 
-    public function __construct(\stdClass $object)
+    public function __construct(array $object)
     {
-        $this->id = $object->id;
+        $this->id = $object['id'];
         $this->createdAt = new \DateTime($object['created_at']);
         $this->isReply = (bool) $object['in_reply_to_screen_name'];
         $this->text = $object['text'];
