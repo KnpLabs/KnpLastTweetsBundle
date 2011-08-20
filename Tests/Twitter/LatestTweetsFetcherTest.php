@@ -85,12 +85,10 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
         
         $tweet = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', $methods, array(), '', false);
         
-        if (null !== $tweet) {
-            $tweet->expects($this->any())
-                ->method('getIsReply')
-                ->will($this->returnValue($getIsReply))
-            ;
-        }
+        $tweet->expects($this->any())
+            ->method('getIsReply')
+            ->will($this->returnValue($getIsReply))
+        ;
         
         return $tweet;
     }
