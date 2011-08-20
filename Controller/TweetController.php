@@ -5,7 +5,7 @@ namespace Knp\Bundle\LastTweetsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 
-class DefaultController extends Controller
+class TwitterController extends Controller
 {
     
     public function latestAction($username)
@@ -18,7 +18,7 @@ class DefaultController extends Controller
             $tweets = array();
         }
 
-        return $this->render('KnpLastTweetsBundle:Default:latest.html.twig', array(
+        return $this->render('KnpLastTweetsBundle:Tweet:latest.html.twig', array(
             'username' => $username,
             'tweets' => $tweets,
         ));
