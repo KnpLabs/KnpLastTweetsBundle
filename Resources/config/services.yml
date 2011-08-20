@@ -1,6 +1,85 @@
 parameters:
-    knp_last_tweets.latest_tweets_fetcher.class: Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher
+    knp_last_tweets.latest_tweets_fetcher.default.class: Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher
+    knp_last_tweets.latest_tweets_fetcher.dummy.class: Knp\Bundle\LastTweetsBundle\Twitter\DummyLatestTweetsFetcher
 
 services:
     knp_last_tweets.latest_tweets_fetcher:
-        class: %knp_last_tweets.latest_tweets_fetcher.class%
+        alias: knp_last_tweets.latest_tweets_fetcher.default
+
+    knp_last_tweets.latest_tweets_fetcher.default:
+        class: %knp_last_tweets.latest_tweets_fetcher.default.class%
+
+    knp_last_tweets.latest_tweets_fetcher.dummy:
+        class: %knp_last_tweets.latest_tweets_fetcher.dummy.class%
+        arguments:
+            -
+                -
+                    id: 1
+                    created_at: '2011-02-14 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "Lorem ipsum #lorem"
+                    user:
+                        name: lorem
+                -
+                    id: 2
+                    created_at: '2011-02-13 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "Dolor sit amet? ping @knplabs"
+                    user:
+                        name: lorem
+                -
+                    id: 3
+                    created_at: '2011-02-12 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "consectetur adipiscing elit on www.knplabs.com #lorem"
+                    user:
+                        name: lorem
+                -
+                    id: 4
+                    created_at: '2011-02-12 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "Quisque suscipit volutpat #eros in adipiscing #lorem"
+                    user:
+                        name: lorem
+                -
+                    id: 5
+                    created_at: '2011-02-12 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "Morbi non elit eget metus viverra blandit at vitae ipsum. Fusce risus metus, porta in lobortis a, placerat vel risus. Suspendisse aliquam??"
+                    user:
+                        name: lorem
+                -
+                    id: 6
+                    created_at: '2011-02-12 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "Proin vitae mauris velit!! #lorem"
+                    user:
+                        name: lorem
+                -
+                    id: 7
+                    created_at: '2011-02-12 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "Duis vel #hendrerit nisl"
+                    user:
+                        name: lorem
+                -
+                    id: 8
+                    created_at: '2011-02-12 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "Quisque varius, justo eget varius pretium, ligula eros malesuada leo, tincidunt pharetra massa orci id metus"
+                    user:
+                        name: lorem
+                -
+                    id: 9
+                    created_at: '2011-02-12 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "Nunc luctus euismod varius"
+                    user:
+                        name: lorem
+                -
+                    id: 10
+                    created_at: '2011-02-12 21:12:13'
+                    in_reply_to_screen_name: false
+                    text: "Suspendisse accumsan fringilla massa a mollis / cc @mbontemps"
+                    user:
+                        name: lorem
