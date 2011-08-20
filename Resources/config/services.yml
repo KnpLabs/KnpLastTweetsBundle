@@ -1,0 +1,6 @@
+parameters:
+    knp_last_tweets.latest_tweets_fetcher.class: Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher
+
+services:
+    knp_last_tweets.latest_tweets_fetcher:
+        class: %knp_last_tweets.latest_tweets_fetcher.class%

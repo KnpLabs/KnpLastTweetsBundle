@@ -1,0 +1,3 @@
+KnpLastTweetsBundle_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: KnpLastTweetsBundle:Default:index }

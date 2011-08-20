@@ -1,0 +1,13 @@
+<section class="knp_last_tweets">
+    <h1>Last tweets of <a class="knp_last_tweets_more" href="http://twitter.com/{{ username }}">{{ username }}</a></h1>
+    {% if tweets %}
+        <ul>
+        {% for tweet in tweets %}
+            <li>{{ tweet.urlizedText|raw }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        No tweets
+    {% endif %}
+    <a class="knp_last_tweets_more" href="http://twitter.com/{{ username }}">See more</a>
+</section>
