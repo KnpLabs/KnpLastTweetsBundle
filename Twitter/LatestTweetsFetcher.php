@@ -35,7 +35,7 @@ class LatestTweetsFetcher
         $i = 0;
         $tweets = array();
 
-        foreach ($data as &$tweetData) {
+        foreach ($data as $tweetData) {
             $tweet = $this->createTweet($tweetData);
             if (!$tweet->isReply()) {
                 $tweets[] = $tweet;
