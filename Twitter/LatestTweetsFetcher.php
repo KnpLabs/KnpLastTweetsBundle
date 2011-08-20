@@ -52,13 +52,7 @@ class LatestTweetsFetcher
 
     protected function getContents($url)
     {
-        try {
-            $data = file_get_contents($url);
-        } catch (\Exception $e) {
-            $data = false;
-        }
-
-        return false;
+        return @file_get_contents($url);
     }
 
     protected function createTweet($data)
