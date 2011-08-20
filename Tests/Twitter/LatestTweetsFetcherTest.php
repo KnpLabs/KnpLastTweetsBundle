@@ -109,15 +109,15 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
         $tweets = $fetcher->fetch('knplabs');
     }
     
-    protected function getMockedTweet($getIsReply = null)
+    protected function getMockedTweet($isReply = null)
     {
-        $methods = (null == $getIsReply) ? array() : array('getIsReply');
+        $methods = (null == $isReply) ? array() : array('isReply');
         
         $tweet = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', $methods, array(), '', false);
         
         $tweet->expects($this->any())
-            ->method('getIsReply')
-            ->will($this->returnValue($getIsReply))
+            ->method('isReply')
+            ->will($this->returnValue($isReply))
         ;
         
         return $tweet;

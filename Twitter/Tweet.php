@@ -34,7 +34,7 @@ class Tweet
         return $this->id;
     }
     
-    public function getIsReply()
+    public function isReply()
     {
         return $this->isReply;
     }
