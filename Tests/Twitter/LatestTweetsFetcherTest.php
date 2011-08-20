@@ -16,7 +16,7 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
         $fetcher->expects($this->any())
             ->method('createTweet')
             ->with($this->equalTo('lorem'))
-            ->will($this->returnValue($this->getMockedTweet()));
+            ->will($this->returnValue($this->getMockedTweet(false)));
 
         $tweets = $fetcher->fetch('knplabs');
     }
@@ -114,15 +114,13 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
         $tweets = $fetcher->fetch('knplabs');
     }
 
-    protected function getMockedTweet($isReply = null)
+    protected function getMockedTweet($isReplyValue)
     {
-        $methods = (null == $isReply) ? array() : array('isReply');
-
-        $tweet = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', $methods, array(), '', false);
+        $tweet = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', array('isReply'), array(), '', false);
 
         $tweet->expects($this->any())
             ->method('isReply')
-            ->will($this->returnValue($isReply));
+            ->will($this->returnValue($isReplyValue));
 
         return $tweet;
     }
@@ -131,7 +129,7 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
     {
         $fetcher = $this->getMock(
             'Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher',
-            array('getContents')
+            array('getContents', 'createTweet')
         );
 
         $fetcher->expects($this->once())
