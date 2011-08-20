@@ -79,6 +79,36 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, count($tweets));
     }
 
+    /**
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function testUnableToFetchData()
+    {
+        $fetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher', array('getContents', 'createTweet'));
+
+        $fetcher->expects($this->once())
+            ->method('getContents')
+            ->with($this->equalTo('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=knplabs'))
+            ->will($this->returnValue(null));
+        
+        $tweets = $fetcher->fetch('knplabs');
+    }
+
+    /**
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function testFetchBadData()
+    {
+        $fetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher', array('getContents', 'createTweet'));
+
+        $fetcher->expects($this->once())
+            ->method('getContents')
+            ->with($this->equalTo('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=knplabs'))
+            ->will($this->returnValue('a{'));
+        
+        $tweets = $fetcher->fetch('knplabs');
+    }
+    
     protected function getMockedTweet($getIsReply = null)
     {
         $methods = (null == $getIsReply) ? array() : array('getIsReply');
@@ -95,7 +125,6 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
 
     protected function getMockedFetcher($fixture)
     {
-        $fetcher = new LatestTweetsFetcher();
         $fetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher', array('getContents', 'createTweet'));
 
         $fetcher->expects($this->once())

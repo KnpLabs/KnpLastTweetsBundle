@@ -3,6 +3,7 @@
 namespace Knp\Bundle\LastTweetsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 
 class DefaultController extends Controller
 {
@@ -13,7 +14,7 @@ class DefaultController extends Controller
         
         try {
             $tweets = $twitter->fetch('knplabs');
-        } catch (\Exception $e) {
+        } catch (TwitterException $e) {
             $tweets = array();
         }
 
