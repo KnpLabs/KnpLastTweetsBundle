@@ -118,7 +118,7 @@ via a user
 
 ## Advanced usage: HTTP caching
 
-*Please note that the following is not necessary: You should be perfectly
+*Please note that the following is not necessary: you should be perfectly
 fine without it.*
 
 You can use [HTTP caching](http://symfony.com/doc/2.0/book/http_cache.html) 
@@ -134,11 +134,6 @@ and use the following code in your templates:
 ```jinja
 {% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'username': 'knplabs', 'age': 5}, {'standalone': true} %}
 ```
-
-## TODO
-
-* Use translation in the default template
-* Explain how to customize/replace the default template
 
 ## Credits
 
