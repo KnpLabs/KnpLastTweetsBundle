@@ -32,23 +32,11 @@ class ForceFetchLastTweetsCommand extends ContainerAwareCommand
             ))
             ->setDescription('Fetch the last tweets a bundle')
             ->setHelp(<<<EOT
-The <info>generate:bundle</info> command helps you generates new bundles.
+The <info>knp-last-tweets:force-fetch</info> command fetches the last tweets of a user.
 
-By default, the command interacts with the developer to tweak the generation.
-Any passed option will be used as a default value for the interaction
-(<comment>--namespace</comment> is the only one needed if you follow the
-conventions):
+It is useful to force the caching via a cron job rather than letting a visitor request do it.
 
-<info>php app/console generate:bundle --namespace=Acme/BlogBundle</info>
-
-Note that you can use <comment>/</comment> instead of <comment>\\</comment> for the namespace delimiter to avoid any
-problem.
-
-If you want to disable any user interaction, use <comment>--no-interaction</comment> but don't forget to pass all needed options:
-
-<info>php app/console generate:bundle --namespace=Acme/BlogBundle --dir=src [--bundle-name=...] --no-interaction</info>
-
-Note that the bundle namespace must end with "Bundle".
+<info>php app/console -last-tweets:force-fetch knplabs</info>
 EOT
             )
             ->setName('knp-last-tweets:force-fetch')
