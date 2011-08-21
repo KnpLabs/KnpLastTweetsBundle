@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\Output;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
-use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\LastTweetsFetcherCacheableInterface;
+use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\FetcherCacheableInterface;
 
 /**
  * Fetch last tweets and cache them.
@@ -51,7 +51,7 @@ EOT
     {
         $twitter = $this->getContainer()->get('knp_last_tweets.last_tweets_fetcher');
         
-        if (!$twitter instanceof LastTweetsFetcherCacheableInterface) {
+        if (!$twitter instanceof FetcherCacheableInterface) {
             $output->writeln(
                 '<error>You\'re using the twitter fetcher driver "'.get_class($twitter)."\"\n".
                 "This command only works if the driver is cacheable.\n".

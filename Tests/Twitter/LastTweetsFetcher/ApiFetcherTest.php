@@ -2,12 +2,12 @@
 
 namespace Knp\Bundle\LastTweetsBundle\Tests\Twitter\LastTweetsFetcher;
 
-use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiLastTweetsFetcher;
+use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiFetcher;
 use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
-class ApiLastTweetsFetcherTest extends \PHPUnit_Framework_TestCase
+class ApiFetcherTest extends \PHPUnit_Framework_TestCase
 {
-    const CLASSNAME = 'Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiLastTweetsFetcher';
+    const CLASSNAME = 'Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiFetcher';
 
     public function testFetchTweetCreation()
     {

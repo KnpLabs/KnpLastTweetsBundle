@@ -4,7 +4,7 @@ namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 
-interface LastTweetsFetcherInterface
+interface FetcherInterface
 {
     /**
      * Fetch the last tweets of a user on twitter

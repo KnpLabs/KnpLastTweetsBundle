@@ -5,7 +5,7 @@ namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
-class ArrayLastTweetsFetcher implements LastTweetsFetcherInterface
+class ArrayFetcher implements FetcherInterface
 {
     protected $data;
     

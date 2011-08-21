@@ -5,13 +5,13 @@ namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 use Zend\Cache\Manager as CacheManager;
 
-class ZendCacheLastTweetsFetcher implements LastTweetsFetcherCacheableInterface
+class ZendCacheFetcher implements FetcherCacheableInterface
 {
     protected $cacheManager;
     protected $cacheName;
     protected $fetcher;
 
-    public function __construct(LastTweetsFetcherInterface $fetcher, CacheManager $cacheManager, $cacheName)
+    public function __construct(FetcherInterface $fetcher, CacheManager $cacheManager, $cacheName)
     {
         $this->fetcher = $fetcher;
         $this->cacheManager = $cacheManager;

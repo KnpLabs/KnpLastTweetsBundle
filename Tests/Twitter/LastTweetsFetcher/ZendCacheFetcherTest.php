@@ -2,16 +2,16 @@
 
 namespace Knp\Bundle\LastTweetsBundle\Tests\Twitter\LastTweetsFetcher;
 
-use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiLastTweetsFetcher;
+use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiFetcher;
 use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
-class ZendCacheLastTweetsFetcherTest extends \PHPUnit_Framework_TestCase
+class ZendCacheFetcherTest extends \PHPUnit_Framework_TestCase
 {
-    const CLASSNAME = 'Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ZendCacheLastTweetsFetcher';
+    const CLASSNAME = 'Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ZendCacheFetcher';
 
     public function testFetchCached()
     {
-        $mockFetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\LastTweetsFetcherInterface');
+        $mockFetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\FetcherInterface');
         $mockCacheManager = $this->getMock('Zend\Cache\Manager', array('getCache'));
         $mockCache = $this->getMock('Zend\Cache\Frontend\Frontend', array('load'));
         $cacheName = 'lorem';
@@ -37,7 +37,7 @@ class ZendCacheLastTweetsFetcherTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchNotCached()
     {
-        $mockFetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\LastTweetsFetcherInterface');
+        $mockFetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\FetcherInterface');
         $mockCacheManager = $this->getMock('Zend\Cache\Manager', array('getCache'));
         $mockCache = $this->getMock('Zend\Cache\Frontend\Frontend', array('load', 'save'));
         $cacheName = 'lorem';
@@ -73,7 +73,7 @@ class ZendCacheLastTweetsFetcherTest extends \PHPUnit_Framework_TestCase
     
     public function testFetchForceRefresh()
     {
-        $mockFetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\LastTweetsFetcherInterface');
+        $mockFetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\FetcherInterface');
         $mockCacheManager = $this->getMock('Zend\Cache\Manager', array('getCache'));
         $mockCache = $this->getMock('Zend\Cache\Frontend\Frontend', array('save'));
         $cacheName = 'lorem';

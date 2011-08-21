@@ -1,5 +1,5 @@
 parameters:
-    knp_last_tweets.last_tweets_fetcher.api.class: Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiLastTweetsFetcher
+    knp_last_tweets.last_tweets_fetcher.api.class: Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiFetcher
 
 services:
     knp_last_tweets.last_tweets_fetcher.api:
