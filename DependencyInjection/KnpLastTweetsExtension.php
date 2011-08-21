@@ -22,7 +22,32 @@ class KnpLastTweetsExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $fetcherConfig = isset($config['fetcher']) ? $config['fetcher'] : array();
+        
+        $driver = 'api';
+
+        if (isset($fetcherConfig['driver'])) {
+            $driver = strtolower($fetcherConfig['driver']);
+        }
+
+        if (!in_array($driver, array('api', 'zend_cache', 'array'))) {
+            throw new \InvalidArgumentException('Invalid imagine driver specified');
+        }
+
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/fetcher_driver'));
+        $loader->load($driver.'.yml');
+
+        if ('zend_cache' === $driver) {
+            $driverOptions = array();
+            if (isset($fetcherConfig['options'])) {
+                $driverOptions = $fetcherConfig['options'];
+            }
+            if (!empty($driverOptions['cache_name'])) {
+                $container->setParameter('knp_last_tweets.last_tweets_fetcher.zend_cache.cache_name', $driverOptions['cache_name']);
+            }
+        }
+
+        $container->setAlias('knp_last_tweets.last_tweets_fetcher', 'knp_last_tweets.last_tweets_fetcher.'.$driver);
+
     }
 }

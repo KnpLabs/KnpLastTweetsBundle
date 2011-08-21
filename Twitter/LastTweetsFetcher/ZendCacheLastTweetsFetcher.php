@@ -21,6 +21,9 @@ class ZendCacheLastTweetsFetcher implements LastTweetsFetcherInterface
     public function fetch($username, $limit = 10, $forceRefresh = false)
     {
         $cache = $this->cacheManager->getCache($this->cacheName);
+        if (null === $cache) {
+            throw new \Exception("Unknown Zend Cache '".$this->cacheName."'");
+        }
         $cacheId = 'knp_last_tweets_'.$username.'_'.$limit;
         
         if ($forceRefresh || false === ($tweets = $cache->load($cacheId))) {

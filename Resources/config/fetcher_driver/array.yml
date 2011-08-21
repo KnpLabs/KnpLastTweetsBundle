@@ -1,23 +1,7 @@
 parameters:
-    knp_last_tweets.last_tweets_fetcher.api.class: Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiLastTweetsFetcher
     knp_last_tweets.last_tweets_fetcher.array.class: Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ArrayLastTweetsFetcher
-    knp_last_tweets.last_tweets_fetcher.zend_cache.class: Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ZendCacheLastTweetsFetcher
-    knp_last_tweets.last_tweets_fetcher.zend_cache.cache_name: knp_last_tweets
 
 services:
-    knp_last_tweets.last_tweets_fetcher:
-        alias: knp_last_tweets.last_tweets_fetcher.api
-
-    knp_last_tweets.last_tweets_fetcher.api:
-        class: %knp_last_tweets.last_tweets_fetcher.api.class%
-
-    knp_last_tweets.last_tweets_fetcher.zend_cache:
-        class: %knp_last_tweets.last_tweets_fetcher.zend_cache.class%
-        arguments:
-            - @knp_last_tweets.last_tweets_fetcher.api
-            - @knp_zend_cache.manager
-            - %knp_last_tweets.last_tweets_fetcher.zend_cache.cache_name%
-
     knp_last_tweets.last_tweets_fetcher.array:
         class: %knp_last_tweets.last_tweets_fetcher.array.class%
         arguments:

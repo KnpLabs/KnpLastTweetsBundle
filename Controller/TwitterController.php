@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TwitterController extends Controller
 {
-    public function lastTweetsAction($username)
+    public function lastTweetsAction($username, $age = null)
     {
         $twitter = $this->get('knp_last_tweets.last_tweets_fetcher');
 
@@ -22,7 +22,10 @@ class TwitterController extends Controller
             'username' => $username . date('H:i:s'),
             'tweets' => $tweets,
         ));
-        $response->setSharedMaxAge(60);
+
+        if ($age) {
+            $response->setSharedMaxAge($age);
+        }
         
         return $response;
     }

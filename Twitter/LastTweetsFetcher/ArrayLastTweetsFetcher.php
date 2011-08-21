@@ -5,7 +5,7 @@ namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
-class ArrayLatestTweetsFetcher implements LastTweetsFetcherInterface
+class ArrayLastTweetsFetcher implements LastTweetsFetcherInterface
 {
     protected $data;
     
@@ -15,7 +15,7 @@ class ArrayLatestTweetsFetcher implements LastTweetsFetcherInterface
     }
     
     /**
-     * Fetch the latest tweets of a user on twitter
+     * Fetch the last tweets of a user on twitter
      *
      * @throws TwitterException     When we do not manage to get a valid answer from the twitter API
      *
