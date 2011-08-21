@@ -12,7 +12,7 @@ class TwitterController extends Controller
         $twitter = $this->get('knp_last_tweets.latest_tweets_fetcher');
 
         try {
-            $tweets = $twitter->fetch('knplabs');
+            $tweets = $twitter->fetch($username);
         } catch (TwitterException $e) {
             $tweets = array();
         }
