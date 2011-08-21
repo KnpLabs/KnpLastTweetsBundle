@@ -22,6 +22,11 @@ class KnpLastTweetsExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        // Load twig
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('twig.yml');
+
+        // Load the good fetcher driver
         $fetcherConfig = isset($config['fetcher']) ? $config['fetcher'] : array();
         
         $driver = 'api';

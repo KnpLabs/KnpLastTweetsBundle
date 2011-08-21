@@ -3,7 +3,7 @@
     {% if tweets %}
         <ul>
         {% for tweet in tweets %}
-            <li>{{ tweet.urlizedText|raw }}</li>
+            <li>{{ tweet.text|knp_tweet_urlize }}</li>
         {% endfor %}
         </ul>
     {% else %}

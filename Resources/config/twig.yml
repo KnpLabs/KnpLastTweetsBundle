@@ -1,0 +1,5 @@
+services:
+    twig.extension.knp_last_tweets.twig:
+        class: Knp\Bundle\LastTweetsBundle\Twig\Extension\TweetUrlizeTwigExtension
+        tags:
+          - { name: twig.extension }
