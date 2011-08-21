@@ -1,8 +1,8 @@
 <?php
 
-namespace Knp\Bundle\LatestTweetsBundle\Tests\Twitter;
+namespace Knp\Bundle\LastTweetsBundle\Tests\Twitter;
 
-use Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher;
+use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
 class TweetTest extends \PHPUnit_Framework_TestCase

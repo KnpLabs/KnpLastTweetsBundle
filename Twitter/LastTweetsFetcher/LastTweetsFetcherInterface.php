@@ -8,7 +8,7 @@ use Zend\Cache\Manager as CacheManager;
 interface LastTweetsFetcherInterface
 {
     /**
-     * Fetch the latest tweets of a user on twitter
+     * Fetch the last tweets of a user on twitter
      *
      * @throws TwitterException     When we do not manage to get a valid answer from the twitter API
      *
