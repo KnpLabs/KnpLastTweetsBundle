@@ -95,6 +95,16 @@ knp_last_tweets:
 
 This will only call the twitter api after a minimum of 300 seconds.
 
+#### The force-fetch command
+
+Caching is good. But once in a while (well one every 5 minutes in the previous case and if you have a continuous flow a visits), one of your visitor will have to wait 2 unnecessary seconds while the server calls twitter API.
+
+To avoid that, you should launch a cron job every 4 minutes which will force the fetching and caching of the new tweets
+
+    php app/console knp-last-tweets:force-fetch knplabs
+
+This way, you will never make your visitors wait!
+
 ### Array driver
 
 The `array` driver uses dummy data and does not call the twitter API.
@@ -110,10 +120,9 @@ knp_last_tweets:
 
 ### Recommendations
 
-* Use the `zend_cache` driver in production (edit your `app/config.yml` file)
 * Use the `array` driver in development (edit your `app/config_dev.yml` file)
-* Use the soon-to-be Symfony command to load the refresh the cache via a cron rather than
-via a user
+* Use the `zend_cache` driver in production (edit your `app/config.yml` file)
+* Use the `force-fetch` command in a cron job in production
 * Use HTTP caching if you know what this is about and if performance is really important to you!
 
 ## Advanced usage: HTTP caching

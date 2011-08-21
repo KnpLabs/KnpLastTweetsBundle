@@ -5,7 +5,7 @@ namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 use Zend\Cache\Manager as CacheManager;
 
-class ZendCacheLastTweetsFetcher implements LastTweetsFetcherInterface
+class ZendCacheLastTweetsFetcher implements LastTweetsFetcherCacheableInterface
 {
     protected $cacheManager;
     protected $cacheName;
@@ -27,12 +27,16 @@ class ZendCacheLastTweetsFetcher implements LastTweetsFetcherInterface
         $cacheId = 'knp_last_tweets_'.$username.'_'.$limit;
         
         if ($forceRefresh || false === ($tweets = $cache->load($cacheId))) {
-
             $tweets = $this->fetcher->fetch($username, $limit);
 
             $cache->save($tweets, $cacheId);
         }
         
         return $tweets;
+    }
+    
+    public function forceFetch($username, $limit = 10)
+    {
+        return $this->fetch($username, $limit, true);
     }
 }
