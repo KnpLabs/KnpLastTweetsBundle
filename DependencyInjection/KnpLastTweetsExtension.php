@@ -36,7 +36,7 @@ class KnpLastTweetsExtension extends Extension
         }
 
         if (!in_array($driver, array('api', 'zend_cache', 'array'))) {
-            throw new \InvalidArgumentException('Invalid imagine driver specified');
+            throw new \InvalidArgumentException('Invalid knp_last_tweets driver specified');
         }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/fetcher_driver'));
