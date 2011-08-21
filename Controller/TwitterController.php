@@ -4,22 +4,29 @@ namespace Knp\Bundle\LastTweetsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
+use Symfony\Component\HttpFoundation\Response;
 
 class TwitterController extends Controller
 {
-    public function latestAction($username)
+    public function lastTweetsAction($username, $age = null)
     {
-        $twitter = $this->get('knp_last_tweets.latest_tweets_fetcher');
+        $twitter = $this->get('knp_last_tweets.last_tweets_fetcher');
 
         try {
             $tweets = $twitter->fetch($username);
         } catch (TwitterException $e) {
             $tweets = array();
         }
-
-        return $this->render('KnpLastTweetsBundle:Tweet:latest.html.twig', array(
-            'username' => $username,
+        
+        $response = $this->render('KnpLastTweetsBundle:Tweet:lastTweets.html.twig', array(
+            'username' => $username . date('H:i:s'),
             'tweets' => $tweets,
         ));
+
+        if ($age) {
+            $response->setSharedMaxAge($age);
+        }
+        
+        return $response;
     }
 }

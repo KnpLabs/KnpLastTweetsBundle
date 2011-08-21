@@ -1,7 +1,7 @@
 # KnpLastTweetsBundles
 
 This Symfony2 bundle will allow you to easily add a visual widget with the
-latest tweets of a Twitter user to your page.
+last tweets of a Twitter user to your page.
 
 Note that tweets are transformed so that links are clickable.
 
@@ -10,7 +10,7 @@ Note that tweets are transformed so that links are clickable.
 After installing the bundle, just do:
 
 ```jinja
-{% render "KnpLastTweetsBundle:Twitter:latest" with {'username': 'knplabs'} %}
+{% render "KnpLastTweetsBundle:Twitter:last" with {'username': 'knplabs'} %}
 ```
 
 ## Installation
@@ -46,9 +46,97 @@ public function registerBundles()
 )
 ```
 
+## Configuration
+
+You will now have to configure the bundle to use one of the three available drivers.
+
+### Api driver
+
+The simplest driver is the `api` driver: it calls twitter API at each request.
+
+```jinja
+# app/config.yml
+knp_last_tweets:
+    fetcher:
+        driver: api
+```
+
+This is the default - you don't even have to add the previous config to `app/config.yml`.  
+But it's obviously not peformant in production.
+
+### Zend_Cache driver
+
+The `zend_cache` driver uses Zend_Cache to cache the last tweets in a Zend_Cache_Backend (file, APC, memcached…).
+
+You will need to install [KnpZendCacheBundle](https://github.com/knplabs/KnpZendCacheBundle) first
+and configure it:
+
+```jinja
+# app/config.yml
+knp_zend_cache:
+    templates:
+        knp_last_tweets:
+            frontend:
+                name: Core
+                options:
+                    lifetime: 300
+                    automatic_serialization: true
+            backend:
+                name: File
+                options:
+                    cache_dir: %kernel.root_dir%/cache/%kernel.environment%
+
+knp_last_tweets:
+    fetcher:
+        driver: zend_cache
+        options:
+            cache_name: knp_last_tweets
+```
+
+This will only call the twitter api after a minimum of 300 seconds.
+
+### Array driver
+
+The `array` driver uses dummy data and does not call the twitter API.
+
+It will return you 10 fake tweets - perfect in development.
+
+```jinja
+# app/config.yml
+knp_last_tweets:
+    fetcher:
+        driver: array
+```
+
+### Recommendations
+
+* Use the `zend_cache` driver in production (edit your `app/config.yml` file)
+* Use the `array` driver in development (edit your `app/config_dev.yml` file)
+* Use the soon-to-be Symfony command to load the refresh the cache via a cron rather than
+via a user
+* Use HTTP caching if you know what this is about and if performance is really important to you!
+
+## Advanced usage: HTTP caching
+
+*Please note that the following is not necessary: You should be perfectly
+fine without it.*
+
+You can use [HTTP caching](http://symfony.com/doc/2.0/book/http_cache.html) 
+and [ESI](http://symfony.com/doc/2.0/book/http_cache.html#using-esi-in-symfony2)
+if you want the `lastTweets` action to be rendered as an ESI tag.
+
+This will improve performance by using a cached version of the whole
+rendered block - even in a dynamic page.
+
+Follow the [instructions](http://symfony.com/doc/2.0/book/http_cache.html) on symfony.com
+and use the following code in your templates:
+
+```jinja
+{% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'username': 'knplabs', 'age': 5}, {'standalone': true} %}
+```
+
 ## TODO
 
-* Cache
 * Use translation in the default template
 * Explain how to customize/replace the default template
 

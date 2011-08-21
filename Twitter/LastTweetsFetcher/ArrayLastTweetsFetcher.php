@@ -1,14 +1,21 @@
 <?php
 
-namespace Knp\Bundle\LastTweetsBundle\Twitter;
+namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
+use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
-class LatestTweetsFetcher
+class ArrayLastTweetsFetcher implements LastTweetsFetcherInterface
 {
+    protected $data;
+    
+    public function __construct(array $data = array())
+    {
+        $this->data = $data;
+    }
+    
     /**
-     * Fetch the latest tweets of a user on twitter
+     * Fetch the last tweets of a user on twitter
      *
      * @throws TwitterException     When we do not manage to get a valid answer from the twitter API
      *
@@ -18,24 +25,10 @@ class LatestTweetsFetcher
      */
     public function fetch($username, $limit = 10)
     {
-        $url = sprintf('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s', $username);
-
-        $data = $this->getContents($url);
-
-        if (empty($data)) {
-            throw new TwitterException('Received empty data from api.twitter.com');
-        }
-
-        $data = json_decode($data, true);
-
-        if (null === $data) {
-            throw new TwitterException('Unable to decode data from api.twitter.com');
-        }
-
-        $i = 0;
         $tweets = array();
 
-        foreach ($data as $tweetData) {
+        $i = 0;
+        foreach ($this->data as $tweetData) {
             $tweet = $this->createTweet($tweetData);
             if (!$tweet->isReply()) {
                 $tweets[] = $tweet;
@@ -48,11 +41,6 @@ class LatestTweetsFetcher
         }
 
         return $tweets;
-    }
-
-    protected function getContents($url)
-    {
-        return @file_get_contents($url);
     }
 
     protected function createTweet($data)
