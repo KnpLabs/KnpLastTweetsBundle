@@ -1,12 +1,14 @@
 <?php
 
-namespace Knp\Bundle\LatestTweetsBundle\Tests\Twitter;
+namespace Knp\Bundle\LastTweetsBundle\Tests\Twitter\LastTweetsFetcher;
 
-use Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher;
+use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiLastTweetsFetcher;
 use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
-class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
+class ApiLastTweetsFetcherTest extends \PHPUnit_Framework_TestCase
 {
+    const CLASSNAME = 'Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiLastTweetsFetcher';
+
     public function testFetchTweetCreation()
     {
         $fixture = json_encode(array('lorem'));
@@ -84,7 +86,7 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
     public function testUnableToFetchData()
     {
         $fetcher = $this->getMock(
-            'Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher',
+            self::CLASSNAME,
             array('getContents', 'createTweet')
         );
 
@@ -102,7 +104,7 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
     public function testFetchBadData()
     {
         $fetcher = $this->getMock(
-            'Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher',
+            self::CLASSNAME,
             array('getContents', 'createTweet')
         );
 
@@ -128,7 +130,7 @@ class LatestTweetsFetcherTest extends \PHPUnit_Framework_TestCase
     protected function getMockedFetcher($fixture)
     {
         $fetcher = $this->getMock(
-            'Knp\Bundle\LastTweetsBundle\Twitter\LatestTweetsFetcher',
+            self::CLASSNAME,
             array('getContents', 'createTweet')
         );
 

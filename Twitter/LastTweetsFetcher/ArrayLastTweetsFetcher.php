@@ -1,11 +1,11 @@
 <?php
 
-namespace Knp\Bundle\LastTweetsBundle\Twitter;
+namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
+use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
-class DummyLatestTweetsFetcher
+class ArrayLatestTweetsFetcher implements LastTweetsFetcherInterface
 {
     protected $data;
     

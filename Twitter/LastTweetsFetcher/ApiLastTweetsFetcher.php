@@ -1,21 +1,12 @@
 <?php
 
-namespace Knp\Bundle\LastTweetsBundle\Twitter;
+namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
+use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
-class LatestTweetsFetcher
+class ApiLastTweetsFetcher implements LastTweetsFetcherInterface
 {
-    /**
-     * Fetch the latest tweets of a user on twitter
-     *
-     * @throws TwitterException     When we do not manage to get a valid answer from the twitter API
-     *
-     * @param string Name of the user
-     * @param int Max number of tweets
-     * @return array
-     */
     public function fetch($username, $limit = 10)
     {
         $url = sprintf('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s', $username);

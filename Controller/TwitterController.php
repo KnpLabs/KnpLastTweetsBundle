@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TwitterController extends Controller
 {
-    public function latestAction($username)
+    public function lastTweetsAction($username)
     {
-        $twitter = $this->get('knp_last_tweets.latest_tweets_fetcher');
+        $twitter = $this->get('knp_last_tweets.last_tweets_fetcher');
 
         try {
             $tweets = $twitter->fetch('knplabs');
@@ -18,7 +18,7 @@ class TwitterController extends Controller
             $tweets = array();
         }
         
-        $response = $this->render('KnpLastTweetsBundle:Tweet:latest.html.twig', array(
+        $response = $this->render('KnpLastTweetsBundle:Tweet:lastTweets.html.twig', array(
             'username' => $username . date('H:i:s'),
             'tweets' => $tweets,
         ));
