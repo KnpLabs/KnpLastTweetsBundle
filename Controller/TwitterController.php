@@ -8,12 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TwitterController extends Controller
 {
-    public function lastTweetsAction($username, $age = null)
+    public function lastTweetsAction($username, $limit = 10, $age = null)
     {
         $twitter = $this->get('knp_last_tweets.last_tweets_fetcher');
 
         try {
-            $tweets = $twitter->fetch($username);
+            $tweets = $twitter->fetch($username, $limit);
         } catch (TwitterException $e) {
             $tweets = array();
         }
