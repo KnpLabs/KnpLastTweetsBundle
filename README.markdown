@@ -10,7 +10,7 @@ Note that tweets are transformed so that links are clickable.
 After installing the bundle, just do:
 
 ```jinja
-{% render "KnpLastTweetsBundle:Twitter:last" with {'username': 'knplabs'} %}
+{% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'username': 'knplabs'} %}
 ```
 
 ## Installation
