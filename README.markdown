@@ -41,7 +41,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Knp\Bundle\MenuBundle\KnpLastTweetsBundle(),
+        new Knp\Bundle\LastTweetsBundle\KnpLastTweetsBundle(),
     );
 )
 ```
