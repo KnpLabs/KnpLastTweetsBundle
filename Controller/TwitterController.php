@@ -19,7 +19,7 @@ class TwitterController extends Controller
         }
         
         $response = $this->render('KnpLastTweetsBundle:Tweet:lastTweets.html.twig', array(
-            'username' => $username . date('H:i:s'),
+            'username' => $username,
             'tweets' => $tweets,
         ));
 
