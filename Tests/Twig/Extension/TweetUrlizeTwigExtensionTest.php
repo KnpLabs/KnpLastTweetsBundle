@@ -33,6 +33,14 @@ class TweetUrlizeTwigExtensionTest extends \PHPUnit_Framework_TestCase
                 'I am <a href="http://www.knplabs.com/en">www.knplabs.com/en</a> - What about you?',
                 'I am www.knplabs.com/en - What about you?'
             ),
+            array(
+                "I&#039;m here",
+                "I&#039;m here"
+            ),
+            array(
+                '<a href="http://twitter.com/search/hashMe">#hashMe</a> atTheBeginning',
+                "#hashMe atTheBeginning",
+            ),
         );
     }
 }
