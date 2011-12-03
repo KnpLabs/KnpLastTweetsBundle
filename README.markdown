@@ -19,7 +19,7 @@ Put the bundle in the `vendor/bundles/Knp/Bundle/LastTweetsBundle` dir.
 
 If you use git submodules:
 
-    git submodule add http://github.com/knplabs/KnpLastTweetsBundle.git vendor/bundles/Knp/Bundle/LastTweetsBundle
+    git submodule add http://github.com/KnpLabs/KnpLastTweetsBundle.git vendor/bundles/Knp/Bundle/LastTweetsBundle
 
 Register the `Knp/Bundle` namespace in your `autoload.php`
 
@@ -68,7 +68,7 @@ But it's obviously not peformant in production.
 
 The `zend_cache` driver uses Zend_Cache to cache the last tweets in a Zend_Cache_Backend (file, APC, memcached…).
 
-You will need to install [KnpZendCacheBundle](https://github.com/knplabs/KnpZendCacheBundle) first
+You will need to install [KnpZendCacheBundle](https://github.com/KnpLabs/KnpZendCacheBundle) first
 and configure it:
 
 ```jinja
