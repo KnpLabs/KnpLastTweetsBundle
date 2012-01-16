@@ -1,0 +1,36 @@
+{
+    "name":        "knplabs/knp-last-tweets-bundle",
+    "type":        "symfony-bundle",
+    "description": "Symfony2 bundle to easily add a widget with the latest tweets of a Twitter user to a page.",
+    "keywords":    ["twitter", "tweets", "knplabs", "knp", "bundle"],
+    "homepage":    "http://github.com/KnpLabs/KnpLastTweetsBundle",
+    "license":     "MIT",
+
+    "authors": [
+        {
+            "name": "KnpLabs Team",
+            "homepage": "http://knplabs.com"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "http://github.com/KnpLabs/KnpLastTweetsBundle/contributors"
+        }
+    ],
+
+    "require": {
+        "php":                      ">=5.3.2",
+        "symfony/framework-bundle": ">=2.0.0"
+    },
+
+    "recommend": {
+        "knplabs/knp-zend-cache-bundle": "*"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "Knp\\Bundle\\LastTweetsBundle": ""
+        }
+    },
+
+    "target-dir": "Knp/Bundle/LastTweetsBundle"
+}
