@@ -1,7 +1,7 @@
 # KnpLastTweetsBundles
 
 This Symfony2 bundle will allow you to easily add a visual widget with the
-last tweets of a Twitter user to your page.
+last tweets of a Twitter users to your page.
 
 Note that tweets are transformed so that links are clickable.
 
@@ -10,8 +10,16 @@ Note that tweets are transformed so that links are clickable.
 After installing the bundle, just do:
 
 ```jinja
-{% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'username': 'knplabs'} %}
+{% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'usernames': 'knplabs'} %}
 ```
+
+Or if you want use combined feed:
+
+```jinja
+{% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'usernames': ['knplabs', 'knplabsru']} %}
+```
+
+In that case tweets will be sorted by date.
 
 ## Installation
 
