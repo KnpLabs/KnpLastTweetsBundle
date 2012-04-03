@@ -7,16 +7,14 @@ class Tweet
     protected $id;
     protected $createdAt;
     protected $text;
-    protected $isReply;
     protected $username;
 
     public function __construct(array $object)
     {
         $this->id = $object['id'];
         $this->createdAt = new \DateTime($object['created_at']);
-        $this->isReply = (bool) $object['in_reply_to_screen_name'];
         $this->text = $object['text'];
-        $this->username = $object['user']['name'];
+        $this->username = $object['username'];
     }
 
     public function getText()
@@ -32,11 +30,6 @@ class Tweet
     public function getId()
     {
         return $this->id;
-    }
-
-    public function isReply()
-    {
-        return $this->isReply;
     }
 
     public function getUsername()
