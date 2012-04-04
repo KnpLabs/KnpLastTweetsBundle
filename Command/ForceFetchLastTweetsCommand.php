@@ -27,19 +27,17 @@ class ForceFetchLastTweetsCommand extends ContainerAwareCommand
     {
         $this
             ->setDefinition(array(
-                new InputArgument('usernames', InputArgument::REQUIRED, 'Twitter usernames'),
+                new InputArgument('username', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Twitter usernames'),
                 new InputOption('limit', 'l', InputOption::VALUE_REQUIRED, 'Max number of tweets', 10),
             ))
-            ->setDescription('Fetch the last tweets a bundle, use comma delimiter for few usernames.')
+            ->setDescription('Fetch the last tweets a bundle.')
             ->setHelp(<<<EOT
 The <info>knp-last-tweets:force-fetch</info> command fetches the last tweets of a users.
 
 It is useful to force the caching via a cron job rather than letting a visitor request do it.
 
-If you need to pass more than 1 usernames, just use comma delimiter.
-
 <info>php app/console knp-last-tweets:force-fetch knplabs</info>
-<info>php app/console knp-last-tweets:force-fetch knplabs,knplabsru</info>
+<info>php app/console knp-last-tweets:force-fetch knplabs knplabsru knpuniversity</info>
 EOT
             )
             ->setName('knp-last-tweets:force-fetch')
@@ -62,7 +60,8 @@ EOT
             return;
         }
 
-        $usernames = explode(',', $input->getArgument('usernames'));
+        $usernames = $input->getArgument('username');
+        
         $limit = $input->getOption('limit');
         
         $output->writeln('Fetching the <info>'.$limit.'</info> last tweets of <info>' . implode(', ', $usernames) . '</info>');

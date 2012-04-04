@@ -13,7 +13,11 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
     {
         $mockedTweet = $this->getMockedTweet();
         
-        $fixture = json_encode(array('one', 'two', 'three'));
+        $fixture = json_encode(array(
+            'one' => array('id_str' => 1, 'text' => 'asdasdasd'), 
+            'two' => array('id_str' => 2, 'text' => 'asdasdasd2'), 
+            'three' => array('id_str' => 3, 'text' => 'asdasdasd3')
+        ));
         
         $fetcher = $this->getMockedFetcher($fixture, 3);
         
@@ -46,7 +50,10 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
         $mockedTweet = $this->getMockedTweet();
 
         // Mock the fetcher
-        $fixture = json_encode(array('one', 'two'));
+        $fixture = json_encode(array(
+            'one' => array('id_str' => 1, 'text' => 'asdasdasd'), 
+            'two' => array('id_str' => 2, 'text' => 'asdasdasd2')
+        ));
 
         $fetcher = $this->getMockedFetcher($fixture);
 
@@ -63,7 +70,12 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
     {
         $mockedTweet = $this->getMockedTweet();
 
-        $fixture = json_encode(array('one', 'two', 'three', 'four'));
+        $fixture = json_encode(array(
+            'one' => array('id_str' => 1, 'text' => 'asdasdasd'), 
+            'two' => array('id_str' => 2, 'text' => 'asdasdasd2'), 
+            'three' => array('id_str' => 3, 'text' => 'asdasdasd3'),
+            'four' => array('id_str' => 4, 'text' => 'asdasdasd4')
+        ));
 
         $fetcher = $this->getMockedFetcher($fixture, 3);
 
@@ -83,12 +95,13 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
     {
         $fetcher = $this->getMock(
             self::CLASSNAME,
-            array('getContents', 'createTweet')
+            array('getContents', 'createTweet'),
+            array($this->getMockedBrowser())
         );
 
         $fetcher->expects($this->once())
             ->method('getContents')
-            ->with($this->equalTo('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=knplabs&count=10&trim_user=1&exclude_replies=true'))
+            ->with($this->stringContains('http://api.twitter.com/1/statuses/user_timeline.json'))
             ->will($this->returnValue(null));
 
         $tweets = $fetcher->fetch('knplabs');
@@ -101,12 +114,13 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
     {
         $fetcher = $this->getMock(
             self::CLASSNAME,
-            array('getContents', 'createTweet')
+            array('getContents', 'createTweet'),
+            array($this->getMockedBrowser())
         );
 
         $fetcher->expects($this->once())
             ->method('getContents')
-            ->with($this->equalTo('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=knplabs&count=10&trim_user=1&exclude_replies=true'))
+            ->with($this->stringContains('http://api.twitter.com/1/statuses/user_timeline.json'))
             ->will($this->returnValue('a{'));
 
         $tweets = $fetcher->fetch('knplabs');
@@ -121,18 +135,22 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
     {
         $fetcher = $this->getMock(
             self::CLASSNAME,
-            array('getContents', 'createTweet')
+            array('getContents', 'createTweet'),
+            array($this->getMockedBrowser())
         );
 
         $fetcher->expects($this->atLeastOnce())
             ->method('getContents')
-            ->with($this->logicalOr(
-               $this->equalTo(sprintf('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=knplabs&count=%d&trim_user=1&exclude_replies=true', $count)),
-               $this->equalTo(sprintf('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=knplabsru&count=%d&trim_user=1&exclude_replies=true', $count))
-            ))
+            ->with($this->stringContains('http://api.twitter.com/1/statuses/user_timeline.json'))
             ->will($this->returnValue($fixture));
 
         return $fetcher;
     }
-
+    
+    protected function getMockedBrowser()
+    {
+        $browser = $this->getMock('Buzz\Browser');
+        
+        return $browser;
+    }
 }
