@@ -4,3 +4,5 @@ parameters:
 services:
     knp_last_tweets.last_tweets_fetcher.api:
         class: %knp_last_tweets.last_tweets_fetcher.api.class%
+        arguments:
+            - "@buzz"

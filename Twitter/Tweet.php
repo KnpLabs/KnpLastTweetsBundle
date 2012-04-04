@@ -8,6 +8,8 @@ class Tweet
     protected $createdAt;
     protected $text;
     protected $username;
+    protected $isReply;
+    protected $isRts;
 
     public function __construct(array $object)
     {
@@ -15,6 +17,8 @@ class Tweet
         $this->createdAt = new \DateTime($object['created_at']);
         $this->text = $object['text'];
         $this->username = $object['username'];
+        $this->isReply = (bool) $object['in_reply_to_screen_name'];
+        $this->isRts = (bool) $object['retweeted_status'];
     }
 
     public function getText()
@@ -45,5 +49,15 @@ class Tweet
     public function getUrl()
     {
         return sprintf('https://twitter.com/%s/status/%s', $this->getUsername(), $this->getId());
+    }
+    
+    public function isReply()
+    {
+        return $this->isReply;
+    }
+    
+    public function isRts()
+    {
+        return $this->isRts;
     }
 }

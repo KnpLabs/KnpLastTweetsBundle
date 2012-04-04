@@ -10,13 +10,13 @@ Note that tweets are transformed so that links are clickable.
 After installing the bundle, just do:
 
 ```jinja
-{% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'usernames': 'knplabs'} %}
+{% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'username': 'knplabs'} %}
 ```
 
 Or if you want use combined feed:
 
 ```jinja
-{% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'usernames': ['knplabs', 'knplabsru']} %}
+{% render "KnpLastTweetsBundle:Twitter:lastTweets" with {'username': ['knplabs', 'knplabsru']} %}
 ```
 
 In that case tweets will be sorted by date.
@@ -52,6 +52,26 @@ public function registerBundles()
         new Knp\Bundle\LastTweetsBundle\KnpLastTweetsBundle(),
     );
 )
+```
+
+Buzz is required to install for using this bundle.
+
+You should configure it in config.yml by adding
+
+```jinja
+# app/config.yml
+services:
+    buzz.message_factory:
+        class: Buzz\Message\Factory
+        public: false
+
+    buzz.client:
+        class: Buzz\Client\Curl
+        public: false
+
+    buzz:
+        class: Buzz\Browser
+        arguments: ["@buzz.client", "@buzz.message_factory"]
 ```
 
 ## Configuration
