@@ -1,7 +1,7 @@
 # KnpLastTweetsBundles
 
 This Symfony2 bundle will allow you to easily add a visual widget with the
-last tweets of a Twitter users to your page.
+last tweets of the Twitter users to your page.
 
 Note that tweets are transformed so that links are clickable.
 
@@ -54,7 +54,7 @@ public function registerBundles()
 )
 ```
 
-Buzz is required to install for using this bundle.
+Buzz is required to use this bundle.
 
 You should configure it in config.yml by adding
 

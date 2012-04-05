@@ -10,7 +10,7 @@ class ApiFetcher implements FetcherInterface
 {
     protected $browser;
     
-    public function __construct($browser)
+    public function __construct(Browser $browser)
     {
         $this->browser = $browser;
     }

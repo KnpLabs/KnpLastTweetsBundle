@@ -2,7 +2,10 @@ parameters:
     knp_last_tweets.last_tweets_fetcher.api.class: Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiFetcher
 
 services:
-    knp_last_tweets.last_tweets_fetcher.api:
+     api_browser:
+         alias: buzz
+
+     knp_last_tweets.last_tweets_fetcher.api:
         class: %knp_last_tweets.last_tweets_fetcher.api.class%
         arguments:
-            - "@buzz"
+            - "@api_browser"
