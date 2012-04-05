@@ -17,8 +17,8 @@ class Tweet
         $this->createdAt = new \DateTime($object['created_at']);
         $this->text = $object['text'];
         $this->username = $object['username'];
-        $this->isReply = (bool) $object['in_reply_to_screen_name'];
-        $this->isRts = (bool) $object['retweeted_status'];
+        $this->isReply = isset($object['in_reply_to_screen_name']);
+        $this->isRts = isset($object['retweeted_status']);
     }
 
     public function getText()

@@ -75,7 +75,7 @@ class ApiFetcher implements FetcherInterface
     protected function fetchTweets($url)
     {
         $data = $this->getContents($url);
-
+        
         if (empty($data)) {
             throw new TwitterException('Received empty data from api.twitter.com');
         }
@@ -91,7 +91,9 @@ class ApiFetcher implements FetcherInterface
     
     protected function getContents($url)
     {
-        return $this->browser->get($url)->getContent();
+        $response = $this->browser->get($url);
+        
+        return $response->getContent();
     }
 
     protected function createTweet($data)
