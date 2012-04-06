@@ -9,7 +9,7 @@ class Tweet
     protected $text;
     protected $username;
     protected $isReply;
-    protected $isRts;
+    protected $isRetweet;
 
     public function __construct(array $object)
     {
@@ -18,7 +18,7 @@ class Tweet
         $this->text = $object['text'];
         $this->username = $object['username'];
         $this->isReply = isset($object['in_reply_to_screen_name']);
-        $this->isRts = isset($object['retweeted_status']);
+        $this->isRetweet = isset($object['retweeted_status']);
     }
 
     public function getText()
@@ -56,7 +56,7 @@ class Tweet
         return $this->isReply;
     }
     
-    public function isRts()
+    public function isRetweet()
     {
         return $this->isRts;
     }
