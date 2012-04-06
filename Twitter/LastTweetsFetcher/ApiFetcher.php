@@ -59,22 +59,28 @@ class ApiFetcher implements FetcherInterface
                 $maxId = $maxId['id_str'];
                 
                 $page++;
-            } else {
-                usort($combineData, function($a, $b) {
-                    return ($a['id_str'] > $b['id_str']) ? -1 : 1;
-                });
-
-                $combineData = array_slice($combineData, null, $limit);   
             }
             
             $i++;
         }
         
+        usort($combineData, function($a, $b) {
+            return ($a['id_str'] > $b['id_str']) ? -1 : 1;
+        });
+        
+        $i = 0;
         $tweets = array();
         
         foreach ($combineData as $tweetData) {
             $tweets[] = $this->createTweet($tweetData);
+
+            ++$i;
+            if ($i >= $limit) {
+                break;
+            }
         }
+        
+        unset($combineData);
 
         return $tweets;
     }
