@@ -25,13 +25,14 @@ class ApiFetcher implements FetcherInterface
             throw new TwitterException('Maximum limit of tweets is 200.');
         }
         
+        $i = 0;
         $maxId = 0;
         $page = 1;
         $limit = $count;
         $count *= 2; // in order to decrease api requests
         $combineData = array();
         
-        while ($page && ($page - 1) <= $retryCall) { // using only if we don't have enough tweets
+        while ($i < $page && ($page - 1) <= $retryCall) { // using only if we don't have enough tweets
             foreach ($usernames as $username) { // aggregate tweets for every username
                 $queryString = sprintf('?screen_name=%s&count=%d&trim_user=1&exclude_replies=%d&include_rts=%d&page=%d', urlencode($username), $count, $excludeReplies, $includeRts, $page);
 
@@ -65,6 +66,8 @@ class ApiFetcher implements FetcherInterface
 
                 $combineData = array_slice($combineData, null, $limit);   
             }
+            
+            $i++;
         }
         
         $tweets = array();
@@ -88,6 +91,10 @@ class ApiFetcher implements FetcherInterface
 
         if (null === $data) {
             throw new TwitterException('Unable to decode data from api.twitter.com');
+        }
+        
+        if(isset($data['error'])) {
+            throw new TwitterException($data['error']);
         }
         
         return $data;

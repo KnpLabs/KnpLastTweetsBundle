@@ -106,6 +106,31 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
         $tweets = $fetcher->fetch('knplabs', 2);
     }
 
+    /**
+     * @test
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function shouldNotFetchTweetsWhenInvalidLimit()
+    {
+        $browserMock = $this->getMockedBrowser();
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs', 205);
+    }
+    
+    /**
+     * @test
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function shouldNotFetchTweetsWhenInvalidUsername()
+    {
+        $fixture = json_encode(array('error' => 'Not found'));
+        $browserMock = $this->getMockedBrowser($fixture);
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs_invalid');
+    }
+    
     protected function getMockedBrowser($fixture = array())
     {
         $browser = $this->getMock('Buzz\Browser');
@@ -121,7 +146,7 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
     {
         $response = $this->getMock('Buzz\Browser\Message\Response', array('getContent'));
 
-        $response->expects($this->atLeastOnce())
+        $response->expects($this->any())
             ->method('getContent')
             ->will($this->returnValue($fixture));
 
