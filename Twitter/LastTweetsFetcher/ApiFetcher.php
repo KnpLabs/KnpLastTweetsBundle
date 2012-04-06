@@ -21,14 +21,18 @@ class ApiFetcher implements FetcherInterface
             $usernames = array((string) $usernames);
         }
         
+        if ($count > 200) {
+            throw new TwitterException('Maximum limit of tweets is 200.');
+        }
+        
         $maxId = 0;
         $page = 1;
         $limit = $count;
         $count *= 2; // in order to decrease api requests
         $combineData = array();
         
-        for ($i = 0; $i < $page && ($page - 1) <= $retryCall; $i++) {
-            foreach ($usernames as $username) {
+        while ($page && ($page - 1) <= $retryCall) { // using only if we don't have enough tweets
+            foreach ($usernames as $username) { // aggregate tweets for every username
                 $queryString = sprintf('?screen_name=%s&count=%d&trim_user=1&exclude_replies=%d&include_rts=%d&page=%d', urlencode($username), $count, $excludeReplies, $includeRts, $page);
 
                 $url = 'http://api.twitter.com/1/statuses/user_timeline.json' . $queryString;
