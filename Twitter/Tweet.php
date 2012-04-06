@@ -58,6 +58,6 @@ class Tweet
     
     public function isRetweet()
     {
-        return $this->isRts;
+        return $this->isRetweet;
     }
 }
