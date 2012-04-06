@@ -7,9 +7,10 @@ use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
 class ApiFetcherTest extends \PHPUnit_Framework_TestCase
 {
-    const CLASSNAME = 'Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiFetcher';
-    
-    public function testRealFetchWithLimit()
+    /**
+     * @test
+     */
+    public function shouldLimitFetchedTweets()
     {
         $fixture = json_encode(array(
             'one' => array('id' => 1, 'id_str' => 1, 'text' => 'asdasdasd', 'created_at' => 'Thu Apr 04 11:58:04 +0000 2012'), 
@@ -17,171 +18,113 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
             'three' => array('id' => 3, 'id_str' => 3, 'text' => 'asdasdasd3', 'created_at' => 'Thu Apr 06 13:22:28 +0000 2012'),
             'four' => array('id' => 4, 'id_str' => 4, 'text' => 'asdasdasd4', 'created_at' => 'Thu Apr 07 14:36:01 +0000 2012')
         ));
-        
-        $mockedBrowser = $this->getMockedBrowser();
-        $mockedResponse = $this->getMockedResponse($fixture);
-        
-        $mockedBrowser->expects($this->exactly(2))
-            ->method('get')
-            ->will($this->returnValue($mockedResponse));
-        
-        $fetcher = new ApiFetcher($mockedBrowser);
-        
-        $tweets = $fetcher->fetch(array('knplabs', 'knplabsru'), 4);
-        
-        $this->assertCount(4, $tweets);
-    }
-    
-    public function testMultiAccountFetch()
-    {
-        $mockedTweet = $this->getMockedTweet();
-        
-        $fixture = json_encode(array(
-            'one' => array('id_str' => 1, 'text' => 'asdasdasd'), 
-            'two' => array('id_str' => 2, 'text' => 'asdasdasd2'), 
-            'three' => array('id_str' => 3, 'text' => 'asdasdasd3')
-        ));
-        
-        $fetcher = $this->getMockedFetcher($fixture);
-        
-        $fetcher->expects($this->exactly(3))
-            ->method('createTweet')
-            ->will($this->returnValue($mockedTweet));
-        
-        $tweets = $fetcher->fetch(array('knplabs', 'knplabsru'), 3);
-        
-        $this->assertCount(3, $tweets);   
-    }
-    
-    public function testFetchTweetCreation()
-    {
-        $fixture = json_encode(array('ipsum'));
 
-        $fetcher = $this->getMockedFetcher($fixture);
+        $browserMock = $this->getMockedBrowser($fixture);
 
-        $fetcher->expects($this->any())
-            ->method('createTweet')
-            ->with($this->equalTo('ipsum'))
-            ->will($this->returnValue($this->getMockedTweet()));
-
-        $tweets = $fetcher->fetch('knplabs');
-    }
-
-    public function testFetchReturnsTweets()
-    {
-        // Mock a tweet
-        $mockedTweet = $this->getMockedTweet();
-
-        // Mock the fetcher
-        $fixture = json_encode(array(
-            'one' => array('id_str' => 1, 'text' => 'asdasdasd'), 
-            'two' => array('id_str' => 2, 'text' => 'asdasdasd2')
-        ));
-
-        $fetcher = $this->getMockedFetcher($fixture);
-
-        $fetcher->expects($this->exactly(2))
-            ->method('createTweet')
-            ->will($this->returnValue($mockedTweet));
-
-        $tweets = $fetcher->fetch('knplabs');
-        
-        $this->assertEquals(2, count($tweets));
-    }
-
-    public function testFetchReturnsLimit()
-    {
-        $mockedTweet = $this->getMockedTweet();
-
-        $fixture = json_encode(array(
-            'one' => array('id_str' => 1, 'text' => 'asdasdasd'), 
-            'two' => array('id_str' => 2, 'text' => 'asdasdasd2'), 
-            'three' => array('id_str' => 3, 'text' => 'asdasdasd3'),
-            'four' => array('id_str' => 4, 'text' => 'asdasdasd4')
-        ));
-
-        $fetcher = $this->getMockedFetcher($fixture, 3);
-
-        $fetcher->expects($this->exactly(3))
-            ->method('createTweet')
-            ->will($this->returnValue($mockedTweet));
-
+        $fetcher = new ApiFetcher($browserMock);
         $tweets = $fetcher->fetch('knplabs', 3);
 
         $this->assertCount(3, $tweets);
     }
-    
-    /**
-     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
-     */
-    public function testUnableToFetchData()
-    {
-        $fetcher = $this->getMock(
-            self::CLASSNAME,
-            array('getContents', 'createTweet'),
-            array($this->getMockedBrowser())
-        );
-
-        $fetcher->expects($this->once())
-            ->method('getContents')
-            ->will($this->returnValue(null));
-
-        $tweets = $fetcher->fetch('knplabs');
-    }
 
     /**
+     * @test
+     */
+    public function shouldFetchFromManyAccounts()
+    {
+        $fixtureKnplabs = json_encode(array(
+            'one' => array('id' => 1, 'id_str' => 1, 'text' => 'asdasdasd', 'created_at' => 'Thu Apr 04 11:58:04 +0000 2012'), 
+            'two' => array('id' => 2, 'id_str' => 2, 'text' => 'asdasdasd2', 'created_at' => 'Thu Apr 05 12:45:43 +0000 2012')
+        ));
+        $fixtureKnplabsRu = json_encode(array(
+            'three' => array('id' => 3, 'id_str' => 3, 'text' => 'asdasdasd3', 'created_at' => 'Thu Apr 06 13:22:28 +0000 2012'),
+            'four' => array('id' => 4, 'id_str' => 4, 'text' => 'asdasdasd4', 'created_at' => 'Thu Apr 07 14:36:01 +0000 2012')
+        ));
+
+        $browserMock = $this->getMock('Buzz\Browser');
+        $browserMock->expects($this->at(0))
+            ->method('get')
+            ->with($this->stringContains('knplabs'))
+            ->will($this->returnValue($this->getMockedResponse($fixtureKnplabs)));
+        $browserMock->expects($this->at(1))
+            ->method('get')
+            ->with($this->stringContains('knplabsru'))
+            ->will($this->returnValue($this->getMockedResponse($fixtureKnplabsRu)));
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch(array('knplabs', 'knplabsru'), 4);
+
+        $this->assertCount(4, $tweets);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchTweets()
+    {
+        $fixture = json_encode(array(
+            'one' => array('id' => 1, 'id_str' => 1, 'text' => 'tweet1', 'created_at' => 'Thu Apr 04 11:58:04 +0000 2012'), 
+            'two' => array('id' => 2, 'id_str' => 2, 'text' => 'tweet2', 'created_at' => 'Thu Apr 05 12:45:43 +0000 2012'),
+            'three' => array('id' => 3, 'id_str' => 3, 'text' => 'tweet3', 'created_at' => 'Thu Apr 06 13:22:28 +0000 2012'),
+            'four' => array('id' => 4, 'id_str' => 4, 'text' => 'tweet4', 'created_at' => 'Thu Apr 07 14:36:01 +0000 2012')
+        ));
+
+        $browserMock = $this->getMockedBrowser($fixture);
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs', 2);
+
+        $this->assertCount(2, $tweets);
+        $this->assertEquals('tweet4', $tweets[0]->getText());
+        $this->assertEquals('tweet3', $tweets[1]->getText());
+        
+        $this->assertInstanceOf('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', $tweets[0]);
+        $this->assertInstanceOf('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', $tweets[1]);
+    }
+
+    /**
+     * @test
      * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
      */
-    public function testFetchBadData()
+    public function shouldNotFetchTweetsWhenServiceUnavailable()
     {
-        $fetcher = $this->getMock(
-            self::CLASSNAME,
-            array('getContents', 'createTweet'),
-            array($this->getMockedBrowser())
-        );
+        $browserMock = $this->getMockedBrowser(null);
 
-        $fetcher->expects($this->once())
-            ->method('getContents')
-            ->will($this->returnValue('a{'));
-
-        $tweets = $fetcher->fetch('knplabs');
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs', 2);
     }
 
-    protected function getMockedTweet()
+    /**
+     * @test
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function shouldNotFetchTweetsWhenInvalidJsonData()
     {
-        return $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', array(), array(), '', false);
+        $browserMock = $this->getMockedBrowser('a{');
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs', 2);
     }
 
-    protected function getMockedFetcher($fixture)
-    {
-        $fetcher = $this->getMock(
-            self::CLASSNAME,
-            array('getContents', 'createTweet'),
-            array($this->getMockedBrowser())
-        );
-
-        $fetcher->expects($this->atLeastOnce())
-            ->method('getContents')
-            ->will($this->returnValue($fixture));
-
-        return $fetcher;
-    }
-    
-    protected function getMockedBrowser()
+    protected function getMockedBrowser($fixture = array())
     {
         $browser = $this->getMock('Buzz\Browser');
-        
+        $response = $this->getMockedResponse($fixture);
+        $browser->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($response));
+
         return $browser;
     }
-    
+
     protected function getMockedResponse($fixture)
     {
         $response = $this->getMock('Buzz\Browser\Message\Response', array('getContent'));
-        
+
         $response->expects($this->atLeastOnce())
             ->method('getContent')
             ->will($this->returnValue($fixture));
-        
+
         return $response;
-    }   
+    }
 }
