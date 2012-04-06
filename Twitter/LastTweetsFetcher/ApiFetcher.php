@@ -91,11 +91,7 @@ class ApiFetcher implements FetcherInterface
     {
         $response = $this->getResponse($url);
         $statusCode = $response->getStatusCode();
-        
-        if ($statusCode != 200) {
-            throw new TwitterException(sprintf('Received %d http code.', $statusCode));
-        }
-        
+                
         $data = $response->getContent();
         
         if (empty($data)) {
@@ -108,6 +104,14 @@ class ApiFetcher implements FetcherInterface
             throw new TwitterException('Unable to decode data: ' . json_last_error());
         }
         
+        if ($statusCode != 200) {
+            if (isset($data['error'])) {
+                throw new TwitterException(sprintf('Twitter error: %s', $data['error']));
+            } else {
+                throw new TwitterException(sprintf('Received %d http code.', $statusCode));
+            }
+        }
+                
         return $data;
     }
     
