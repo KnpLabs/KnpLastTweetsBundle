@@ -42,10 +42,12 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
         ));
 
         $browserMock = $this->getMock('Buzz\Browser');
+        
         $browserMock->expects($this->at(0))
             ->method('get')
             ->with($this->stringContains('knplabs'))
             ->will($this->returnValue($this->getMockedResponse($fixtureKnplabs)));
+        
         $browserMock->expects($this->at(1))
             ->method('get')
             ->with($this->stringContains('knplabsru'))
@@ -125,16 +127,33 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
     public function shouldNotFetchTweetsWhenInvalidUsername()
     {
         $fixture = json_encode(array('error' => 'Not found'));
-        $browserMock = $this->getMockedBrowser($fixture);
+        $browserMock = $this->getMockedBrowser($fixture, 404);
 
         $fetcher = new ApiFetcher($browserMock);
         $tweets = $fetcher->fetch('knplabs_invalid');
     }
     
-    protected function getMockedBrowser($fixture = array())
+    /**
+     * @test
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function shouldNotFetchTweetsWhenWrongStatusCode()
+    {
+        $fixture = json_encode(array(
+            'one' => array('id' => 1, 'id_str' => 1, 'text' => 'asdasdasd', 'created_at' => 'Thu Apr 04 11:58:04 +0000 2012'), 
+            'two' => array('id' => 2, 'id_str' => 2, 'text' => 'asdasdasd2', 'created_at' => 'Thu Apr 05 12:45:43 +0000 2012')
+        ));
+        
+        $browserMock = $this->getMockedBrowser($fixture, 500);
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs');
+    }
+    
+    protected function getMockedBrowser($fixture = array(), $statusCode = 200)
     {
         $browser = $this->getMock('Buzz\Browser');
-        $response = $this->getMockedResponse($fixture);
+        $response = $this->getMockedResponse($fixture, $statusCode);
         $browser->expects($this->any())
             ->method('get')
             ->will($this->returnValue($response));
@@ -142,14 +161,18 @@ class ApiFetcherTest extends \PHPUnit_Framework_TestCase
         return $browser;
     }
 
-    protected function getMockedResponse($fixture)
+    protected function getMockedResponse($fixture, $statusCode = 200)
     {
-        $response = $this->getMock('Buzz\Browser\Message\Response', array('getContent'));
+        $response = $this->getMock('Buzz\Browser\Message\Response', array('getContent', 'getStatusCode'));
 
         $response->expects($this->any())
             ->method('getContent')
             ->will($this->returnValue($fixture));
 
+        $response->expects($this->any())
+            ->method('getStatusCode')
+            ->will($this->returnValue($statusCode));
+        
         return $response;
     }
 }

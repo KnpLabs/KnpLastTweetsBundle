@@ -4,7 +4,9 @@ namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
+
 use Buzz\Browser;
+use Buzz\Browser\Message\Response;
 
 class ApiFetcher implements FetcherInterface
 {
@@ -87,30 +89,31 @@ class ApiFetcher implements FetcherInterface
     
     protected function fetchTweets($url)
     {
-        $data = $this->getContents($url);
+        $response = $this->getResponse($url);
+        $statusCode = $response->getStatusCode();
+        
+        if ($statusCode != 200) {
+            throw new TwitterException(sprintf('Received %d http code.', $statusCode));
+        }
+        
+        $data = $response->getContent();
         
         if (empty($data)) {
             throw new TwitterException('Received empty data from api.twitter.com');
         }
-
-        $data = json_decode($data, true);
-
-        if (null === $data) {
-            throw new TwitterException('Unable to decode data from api.twitter.com');
-        }
         
-        if(isset($data['error'])) {
-            throw new TwitterException($data['error']);
+        $data = json_decode($data, true);
+        
+        if (null === $data) {
+            throw new TwitterException('Unable to decode data: ' . json_last_error());
         }
         
         return $data;
     }
     
-    protected function getContents($url)
-    {
-        $response = $this->browser->get($url);
-        
-        return $response->getContent();
+    protected function getResponse($url)
+    {        
+        return $this->browser->get($url);
     }
 
     protected function createTweet($data)
