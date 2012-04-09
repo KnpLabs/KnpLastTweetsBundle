@@ -43,6 +43,6 @@ class ZendCacheFetcher implements FetcherCacheableInterface
     
     public function forceFetch($username, $limit = 10)
     {
-        return $this->fetch($username, $limit, true);
+        return $this->fetch($username, $limit);
     }
 }
