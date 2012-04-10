@@ -56,24 +56,6 @@ public function registerBundles()
 
 Buzz is required to use this bundle.
 
-You should configure it in config.yml by adding
-
-```jinja
-# app/config.yml
-services:
-    buzz.message_factory:
-        class: Buzz\Message\Factory
-        public: false
-
-    buzz.client:
-        class: Buzz\Client\Curl
-        public: false
-
-    buzz:
-        class: Buzz\Browser
-        arguments: ["@buzz.client", "@buzz.message_factory"]
-```
-
 ## Configuration
 
 You will now have to configure the bundle to use one of the three available drivers.

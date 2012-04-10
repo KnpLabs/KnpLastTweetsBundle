@@ -26,9 +26,14 @@ class KnpLastTweetsExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('twig.yml');
 
+        // Try to load Buzz service if not found
+        if (!$container->hasDefinition('buzz')) {
+            $loader->load('buzz.yml');
+        }
+
         // Load the good fetcher driver
         $fetcherConfig = isset($config['fetcher']) ? $config['fetcher'] : array();
-        
+
         $driver = 'api';
 
         if (isset($fetcherConfig['driver'])) {
@@ -53,6 +58,5 @@ class KnpLastTweetsExtension extends Extension
         }
 
         $container->setAlias('knp_last_tweets.last_tweets_fetcher', 'knp_last_tweets.last_tweets_fetcher.'.$driver);
-
     }
 }
