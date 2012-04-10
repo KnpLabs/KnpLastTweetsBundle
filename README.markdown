@@ -146,4 +146,4 @@ and use the following code in your templates:
 
 ## Credits
 
-* Initial work has been done by [Knp's Symfony2 experts](http://www.knplabs.com/)
+* Initial work has been done by [KnpLabs](http://knplabs.com/)
