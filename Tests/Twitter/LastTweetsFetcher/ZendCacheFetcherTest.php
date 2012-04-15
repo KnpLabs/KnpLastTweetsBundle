@@ -9,6 +9,32 @@ class ZendCacheFetcherTest extends \PHPUnit_Framework_TestCase
 {
     const CLASSNAME = 'Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ZendCacheFetcher';
 
+    public function testFetchCachedWithArrayUsername()
+    {
+        $mockFetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\FetcherInterface');
+        $mockCacheManager = $this->getMock('Zend\Cache\Manager', array('getCache'));
+        $mockCache = $this->getMock('Zend\Cache\Frontend\Frontend', array('load'));
+        $cacheName = 'lorem';
+        $returnedTweets = array('ipsum');
+
+        $mockCacheManager->expects($this->once())
+            ->method('getCache')
+            ->with($this->equalTo($cacheName))
+            ->will($this->returnValue($mockCache));
+
+        $mockCache->expects($this->once())
+            ->method('load')
+            ->with($this->equalTo('knp_last_tweets_knplabs_knplabsru_10'))
+            ->will($this->returnValue($returnedTweets));
+
+        $class = self::CLASSNAME;
+        $fetcher = new $class($mockFetcher, $mockCacheManager, $cacheName);
+
+        $tweets = $fetcher->fetch(array('knplabs', 'knplabsru'));
+
+        $this->assertEquals($returnedTweets, $tweets);
+    }
+    
     public function testFetchCached()
     {
         $mockFetcher = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\FetcherInterface');
@@ -46,7 +72,7 @@ class ZendCacheFetcherTest extends \PHPUnit_Framework_TestCase
 
         $mockFetcher->expects($this->once())
             ->method('fetch')
-            ->with($this->equalTo('knplabs'), $this->equalTo(10))
+            ->with($this->equalTo(array('knplabs')), $this->equalTo(10))
             ->will($this->returnValue($returnedTweets));
 
         $mockCacheManager->expects($this->once())
@@ -81,7 +107,7 @@ class ZendCacheFetcherTest extends \PHPUnit_Framework_TestCase
 
         $mockFetcher->expects($this->once())
             ->method('fetch')
-            ->with($this->equalTo('knplabs'), $this->equalTo(10))
+            ->with($this->equalTo(array('knplabs')), $this->equalTo(10))
             ->will($this->returnValue($returnedTweets));
 
         $mockCacheManager->expects($this->once())

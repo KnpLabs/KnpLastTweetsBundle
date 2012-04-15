@@ -20,11 +20,17 @@ class ZendCacheFetcher implements FetcherCacheableInterface
     
     public function fetch($username, $limit = 10, $forceRefresh = false)
     {
+        if (!is_array($username)) {
+            $username = array((string) $username);
+        }
+        
         $cache = $this->cacheManager->getCache($this->cacheName);
+        
         if (null === $cache) {
             throw new \Exception("Unknown Zend Cache '".$this->cacheName."'");
         }
-        $cacheId = 'knp_last_tweets_'.$username.'_'.$limit;
+        
+        $cacheId = 'knp_last_tweets_' . implode('_', $username) . '_' . $limit;
         
         if ($forceRefresh || false === ($tweets = $cache->load($cacheId))) {
             $tweets = $this->fetcher->fetch($username, $limit);
@@ -37,6 +43,6 @@ class ZendCacheFetcher implements FetcherCacheableInterface
     
     public function forceFetch($username, $limit = 10)
     {
-        return $this->fetch($username, $limit, true);
+        return $this->fetch($username, $limit);
     }
 }

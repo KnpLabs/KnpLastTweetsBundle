@@ -19,16 +19,18 @@
 
     "require": {
         "php":                      ">=5.3.2",
-        "symfony/framework-bundle": ">=2.0.0"
+        "symfony/framework-bundle": ">=2.0.0",
+        "kriswallsmith/buzz":       ">=v0.5",
+		"twig/twig":				">=1.6.5"
     },
 
-    "recommend": {
+    "suggest": {
         "knplabs/knp-zend-cache-bundle": "*"
     },
 
     "autoload": {
         "psr-0": {
-            "Knp\\Bundle\\LastTweetsBundle": ""
+            "Knp\\Bundle\\LastTweetsBundle": "."
         }
     },
 

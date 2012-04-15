@@ -7,139 +7,172 @@ use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
 class ApiFetcherTest extends \PHPUnit_Framework_TestCase
 {
-    const CLASSNAME = 'Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ApiFetcher';
-
-    public function testFetchTweetCreation()
+    /**
+     * @test
+     */
+    public function shouldLimitFetchedTweets()
     {
-        $fixture = json_encode(array('lorem'));
+        $fixture = json_encode(array(
+            'one' => array('id' => 1, 'id_str' => 1, 'text' => 'asdasdasd', 'created_at' => 'Thu Apr 04 11:58:04 +0000 2012'), 
+            'two' => array('id' => 2, 'id_str' => 2, 'text' => 'asdasdasd2', 'created_at' => 'Thu Apr 05 12:45:43 +0000 2012'),
+            'three' => array('id' => 3, 'id_str' => 3, 'text' => 'asdasdasd3', 'created_at' => 'Thu Apr 06 13:22:28 +0000 2012'),
+            'four' => array('id' => 4, 'id_str' => 4, 'text' => 'asdasdasd4', 'created_at' => 'Thu Apr 07 14:36:01 +0000 2012')
+        ));
 
-        $fetcher = $this->getMockedFetcher($fixture);
+        $browserMock = $this->getMockedBrowser($fixture);
 
-        $fetcher->expects($this->any())
-            ->method('createTweet')
-            ->with($this->equalTo('lorem'))
-            ->will($this->returnValue($this->getMockedTweet(false)));
-
-        $tweets = $fetcher->fetch('knplabs');
-    }
-
-    public function testFetchReturnsTweets()
-    {
-        // Mock a tweet
-        $mockedTweet = $this->getMockedTweet(false);
-
-        // Mock the fetcher
-        $fixture = json_encode(array('one', 'two'));
-
-        $fetcher = $this->getMockedFetcher($fixture);
-
-        $fetcher->expects($this->exactly(2))
-            ->method('createTweet')
-            ->will($this->returnValue($mockedTweet));
-
-        $tweets = $fetcher->fetch('knplabs');
-
-        // Test
-        $this->assertEquals(2, count($tweets));
-    }
-
-    public function testFetchOnlyIfNotAReply()
-    {
-        // Mock a tweet
-        $mockedTweet = $this->getMockedTweet(true);
-
-        // Mock the fetcher
-        $fixture = json_encode(array('one', 'two'));
-
-        $fetcher = $this->getMockedFetcher($fixture);
-
-        $fetcher->expects($this->exactly(2))
-            ->method('createTweet')
-            ->will($this->returnValue($mockedTweet));
-
-        $tweets = $fetcher->fetch('knplabs');
-
-        // Test
-        $this->assertEquals(0, count($tweets));
-    }
-
-    public function testFetchReturnsLimit()
-    {
-        $mockedTweet = $this->getMockedTweet(false);
-
-        $fixture = json_encode(array('one', 'two', 'three', 'four'));
-
-        $fetcher = $this->getMockedFetcher($fixture);
-
-        $fetcher->expects($this->exactly(3))
-            ->method('createTweet')
-            ->will($this->returnValue($mockedTweet));
-
+        $fetcher = new ApiFetcher($browserMock);
         $tweets = $fetcher->fetch('knplabs', 3);
 
-        $this->assertEquals(3, count($tweets));
+        $this->assertCount(3, $tweets);
     }
 
     /**
-     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     * @test
      */
-    public function testUnableToFetchData()
+    public function shouldFetchFromManyAccounts()
     {
-        $fetcher = $this->getMock(
-            self::CLASSNAME,
-            array('getContents', 'createTweet')
-        );
+        $fixtureKnplabs = json_encode(array(
+            'one' => array('id' => 1, 'id_str' => 1, 'text' => 'asdasdasd', 'created_at' => 'Thu Apr 04 11:58:04 +0000 2012'), 
+            'two' => array('id' => 2, 'id_str' => 2, 'text' => 'asdasdasd2', 'created_at' => 'Thu Apr 05 12:45:43 +0000 2012')
+        ));
+        $fixtureKnplabsRu = json_encode(array(
+            'three' => array('id' => 3, 'id_str' => 3, 'text' => 'asdasdasd3', 'created_at' => 'Thu Apr 06 13:22:28 +0000 2012'),
+            'four' => array('id' => 4, 'id_str' => 4, 'text' => 'asdasdasd4', 'created_at' => 'Thu Apr 07 14:36:01 +0000 2012')
+        ));
 
-        $fetcher->expects($this->once())
-            ->method('getContents')
-            ->with($this->equalTo('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=knplabs'))
-            ->will($this->returnValue(null));
+        $browserMock = $this->getMock('Buzz\Browser');
+        
+        $browserMock->expects($this->at(0))
+            ->method('get')
+            ->with($this->stringContains('knplabs'))
+            ->will($this->returnValue($this->getMockedResponse($fixtureKnplabs)));
+        
+        $browserMock->expects($this->at(1))
+            ->method('get')
+            ->with($this->stringContains('knplabsru'))
+            ->will($this->returnValue($this->getMockedResponse($fixtureKnplabsRu)));
 
-        $tweets = $fetcher->fetch('knplabs');
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch(array('knplabs', 'knplabsru'), 4);
+
+        $this->assertCount(4, $tweets);
     }
 
     /**
+     * @test
+     */
+    public function shouldFetchTweets()
+    {
+        $fixture = json_encode(array(
+            'one' => array('id' => 1, 'id_str' => 1, 'text' => 'tweet1', 'created_at' => 'Thu Apr 04 11:58:04 +0000 2012'), 
+            'two' => array('id' => 2, 'id_str' => 2, 'text' => 'tweet2', 'created_at' => 'Thu Apr 05 12:45:43 +0000 2012'),
+            'three' => array('id' => 3, 'id_str' => 3, 'text' => 'tweet3', 'created_at' => 'Thu Apr 06 13:22:28 +0000 2012'),
+            'four' => array('id' => 4, 'id_str' => 4, 'text' => 'tweet4', 'created_at' => 'Thu Apr 07 14:36:01 +0000 2012')
+        ));
+
+        $browserMock = $this->getMockedBrowser($fixture);
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs', 2);
+
+        $this->assertCount(2, $tweets);
+        $this->assertEquals('tweet4', $tweets[0]->getText());
+        $this->assertEquals('tweet3', $tweets[1]->getText());
+        
+        $this->assertInstanceOf('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', $tweets[0]);
+        $this->assertInstanceOf('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', $tweets[1]);
+    }
+
+    /**
+     * @test
      * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
      */
-    public function testFetchBadData()
+    public function shouldNotFetchTweetsWhenServiceUnavailable()
     {
-        $fetcher = $this->getMock(
-            self::CLASSNAME,
-            array('getContents', 'createTweet')
-        );
+        $browserMock = $this->getMockedBrowser(null);
 
-        $fetcher->expects($this->once())
-            ->method('getContents')
-            ->with($this->equalTo('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=knplabs'))
-            ->will($this->returnValue('a{'));
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs', 2);
+    }
 
+    /**
+     * @test
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function shouldNotFetchTweetsWhenInvalidJsonData()
+    {
+        $browserMock = $this->getMockedBrowser('a{');
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs', 2);
+    }
+
+    /**
+     * @test
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function shouldNotFetchTweetsWhenInvalidLimit()
+    {
+        $browserMock = $this->getMockedBrowser();
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs', 205);
+    }
+    
+    /**
+     * @test
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function shouldNotFetchTweetsWhenInvalidUsername()
+    {
+        $fixture = json_encode(array('error' => 'Not found'));
+        $browserMock = $this->getMockedBrowser($fixture, 404);
+
+        $fetcher = new ApiFetcher($browserMock);
+        $tweets = $fetcher->fetch('knplabs_invalid');
+    }
+    
+    /**
+     * @test
+     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     */
+    public function shouldNotFetchTweetsWhenWrongStatusCode()
+    {
+        $fixture = json_encode(array(
+            'one' => array('id' => 1, 'id_str' => 1, 'text' => 'asdasdasd', 'created_at' => 'Thu Apr 04 11:58:04 +0000 2012'), 
+            'two' => array('id' => 2, 'id_str' => 2, 'text' => 'asdasdasd2', 'created_at' => 'Thu Apr 05 12:45:43 +0000 2012')
+        ));
+        
+        $browserMock = $this->getMockedBrowser($fixture, 500);
+
+        $fetcher = new ApiFetcher($browserMock);
         $tweets = $fetcher->fetch('knplabs');
     }
-
-    protected function getMockedTweet($isReplyValue)
+    
+    protected function getMockedBrowser($fixture = array(), $statusCode = 200)
     {
-        $tweet = $this->getMock('Knp\Bundle\LastTweetsBundle\Twitter\Tweet', array('isReply'), array(), '', false);
+        $browser = $this->getMock('Buzz\Browser');
+        $response = $this->getMockedResponse($fixture, $statusCode);
+        $browser->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($response));
 
-        $tweet->expects($this->any())
-            ->method('isReply')
-            ->will($this->returnValue($isReplyValue));
-
-        return $tweet;
+        return $browser;
     }
 
-    protected function getMockedFetcher($fixture)
+    protected function getMockedResponse($fixture, $statusCode = 200)
     {
-        $fetcher = $this->getMock(
-            self::CLASSNAME,
-            array('getContents', 'createTweet')
-        );
+        $response = $this->getMock('Buzz\Browser\Message\Response', array('getContent', 'getStatusCode'));
 
-        $fetcher->expects($this->once())
-            ->method('getContents')
-            ->with($this->equalTo('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=knplabs'))
+        $response->expects($this->any())
+            ->method('getContent')
             ->will($this->returnValue($fixture));
 
-        return $fetcher;
+        $response->expects($this->any())
+            ->method('getStatusCode')
+            ->will($this->returnValue($statusCode));
+        
+        return $response;
     }
-
 }

@@ -29,14 +29,11 @@ class ArrayFetcher implements FetcherInterface
 
         $i = 0;
         foreach ($this->data as $tweetData) {
-            $tweet = $this->createTweet($tweetData);
-            if (!$tweet->isReply()) {
-                $tweets[] = $tweet;
+            $tweets[] = $this->createTweet($tweetData);
 
-                $i++;
-                if ($i >= $limit) {
-                    break;
-                }
+            $i++;
+            if ($i >= $limit) {
+                break;
             }
         }
 

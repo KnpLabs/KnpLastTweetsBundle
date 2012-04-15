@@ -27,16 +27,17 @@ class ForceFetchLastTweetsCommand extends ContainerAwareCommand
     {
         $this
             ->setDefinition(array(
-                new InputArgument('username', InputArgument::REQUIRED, 'Twitter username'),
+                new InputArgument('username', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Twitter usernames'),
                 new InputOption('limit', 'l', InputOption::VALUE_REQUIRED, 'Max number of tweets', 10),
             ))
-            ->setDescription('Fetch the last tweets a bundle')
+            ->setDescription('Fetch the last tweets a bundle.')
             ->setHelp(<<<EOT
-The <info>knp-last-tweets:force-fetch</info> command fetches the last tweets of a user.
+The <info>knp-last-tweets:force-fetch</info> command fetches the last tweets of a users.
 
 It is useful to force the caching via a cron job rather than letting a visitor request do it.
 
-<info>php app/console -last-tweets:force-fetch knplabs</info>
+<info>php app/console knp-last-tweets:force-fetch knplabs</info>
+<info>php app/console knp-last-tweets:force-fetch knplabs knplabsru knpuniversity</info>
 EOT
             )
             ->setName('knp-last-tweets:force-fetch')
@@ -59,13 +60,14 @@ EOT
             return;
         }
 
-        $username = $input->getArgument('username');
+        $usernames = $input->getArgument('username');
+        
         $limit = $input->getOption('limit');
         
-        $output->writeln('Fetching the <info>'.$limit.'</info> last tweets of <info>'.$username.'</info>');
+        $output->writeln('Fetching the <info>'.$limit.'</info> last tweets of <info>' . implode(', ', $usernames) . '</info>');
 
         try {
-            $tweets = $twitter->forceFetch($username, $limit, true);
+            $tweets = $twitter->forceFetch($usernames, $limit, true);
         } catch (TwitterException $e) {
             $output->writeln('<error>Unable to fetch last tweets: '.$e->getMessage().'</error>');
         }
