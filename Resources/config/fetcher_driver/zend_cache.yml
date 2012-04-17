@@ -1,5 +1,6 @@
 imports:
   - { resource: api.yml }
+  - { resource: oauth.yml }
 
 parameters:
     knp_last_tweets.last_tweets_fetcher.zend_cache.class: Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ZendCacheFetcher
@@ -9,6 +10,6 @@ services:
     knp_last_tweets.last_tweets_fetcher.zend_cache:
         class: %knp_last_tweets.last_tweets_fetcher.zend_cache.class%
         arguments:
-            - @knp_last_tweets.last_tweets_fetcher.api
+            - @knp_last_tweets.last_tweets_secondary_fetcher
             - @knp_zend_cache.manager
             - %knp_last_tweets.last_tweets_fetcher.zend_cache.cache_name%

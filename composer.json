@@ -21,11 +21,27 @@
         "php":                      ">=5.3.2",
         "symfony/framework-bundle": ">=2.0.0",
         "kriswallsmith/buzz":       ">=v0.5",
-		"twig/twig":				">=1.6.5"
+        "twig/twig":				">=1.6.5",
+        "inori/twitter-app-bundle": "*"
     },
 
     "suggest": {
         "knplabs/knp-zend-cache-bundle": "*"
+    },
+
+    "repositories": {
+        "twitteroauth": {
+            "type": "package",
+            "package": {
+                "name": "abraham/twitteroauth",
+                "version": "master-dev",
+                "source": {
+                    "url": "git://github.com/abraham/twitteroauth.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        }
     },
 
     "autoload": {

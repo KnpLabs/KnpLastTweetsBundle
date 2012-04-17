@@ -40,7 +40,7 @@ class KnpLastTweetsExtension extends Extension
             $driver = strtolower($fetcherConfig['driver']);
         }
 
-        if (!in_array($driver, array('api', 'zend_cache', 'array'))) {
+        if (!in_array($driver, array('oauth', 'api', 'zend_cache', 'array'))) {
             throw new \InvalidArgumentException('Invalid knp_last_tweets driver specified');
         }
 
@@ -51,6 +51,14 @@ class KnpLastTweetsExtension extends Extension
             $driverOptions = array();
             if (isset($fetcherConfig['options'])) {
                 $driverOptions = $fetcherConfig['options'];
+
+                if (isset($driverOptions['method'])) {
+                    if (!in_array($driverOptions['method'], array('oauth', 'api'))) {
+                        throw new \InvalidArgumentException('Invalid knp_last_tweets secondary driver specified');
+                    }
+
+                    $container->setAlias('knp_last_tweets.last_tweets_secondary_fetcher', 'knp_last_tweets.last_tweets_fetcher.'.$driverOptions['method']);
+                }
             }
             if (!empty($driverOptions['cache_name'])) {
                 $container->setParameter('knp_last_tweets.last_tweets_fetcher.zend_cache.cache_name', $driverOptions['cache_name']);

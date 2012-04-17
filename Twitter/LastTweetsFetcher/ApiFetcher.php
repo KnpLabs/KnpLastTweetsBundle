@@ -36,15 +36,21 @@ class ApiFetcher implements FetcherInterface
         
         while ($i < $page && ($page - 1) <= $retryCall) { // using only if we don't have enough tweets
             foreach ($usernames as $username) { // aggregate tweets for every username
-                $queryString = sprintf('?screen_name=%s&count=%d&trim_user=1&exclude_replies=%d&include_rts=%d&page=%d', urlencode($username), $count, $excludeReplies, $includeRts, $page);
 
-                $url = 'http://api.twitter.com/1/statuses/user_timeline.json' . $queryString;
-                
+                $parameters = array(
+                    'screen_name' => urlencode($username),
+                    'count' => $count,
+                    'trim_user' => 1,
+                    'exclude_replies' => (int) $excludeReplies,
+                    'include_rts' => (int) $includeRts,
+                    'page' => $page
+                );
+
                 if($maxId) {
-                    $url .= sprintf("&max_id=%d", $maxId);
+                    $parameters['max_id'] = $maxId;
                 }
                 
-                $data = $this->fetchTweets($url);
+                $data = $this->fetchTweets($parameters);
                 
                 // we need to inject username, when use "trim_user"
                 array_walk($data, function(&$tweet) use($username) {
@@ -87,9 +93,9 @@ class ApiFetcher implements FetcherInterface
         return $tweets;
     }
     
-    protected function fetchTweets($url)
+    protected function fetchTweets($parameters)
     {
-        $response = $this->getResponse($url);
+        $response = $this->getResponse('statuses/user_timeline', $parameters);
         $statusCode = $response->getStatusCode();
                 
         $data = $response->getContent();
@@ -115,13 +121,26 @@ class ApiFetcher implements FetcherInterface
         return $data;
     }
     
-    protected function getResponse($url)
-    {        
-        return $this->browser->get($url);
+    protected function getResponse($api, $parameters)
+    {
+        return $this->browser->get(sprintf("http://api.twitter.com/1/%s.json?%s", $api, implode("&", $this->buildQuery($parameters))));
     }
 
     protected function createTweet($data)
     {
         return new Tweet($data);
+    }
+
+    private function buildQuery($parameters)
+    {
+        if (!is_array($parameters)) {
+            return array();
+        } else {
+            array_walk($parameters, function($value, $key) use(&$parameters) {
+                 $parameters[$key] = $key . '=' . $value;
+            });
+
+            return $parameters;
+        }
     }
 }
