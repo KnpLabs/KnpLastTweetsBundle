@@ -133,14 +133,10 @@ class ApiFetcher implements FetcherInterface
 
     private function buildQuery($parameters)
     {
-        if (!is_array($parameters)) {
-            return array();
-        } else {
-            array_walk($parameters, function($value, $key) use(&$parameters) {
-                 $parameters[$key] = $key . '=' . $value;
-            });
+        array_walk($parameters, function($value, $key) use(&$parameters) {
+             $parameters[$key] = $key . '=' . $value;
+        });
 
-            return $parameters;
-        }
+        return $parameters;
     }
 }

@@ -20,7 +20,7 @@ class OAuthFetcher extends ApiFetcher implements FetcherInterface
         $data = @json_decode(@json_encode($data), true);
 
         if (!is_array($data)) {
-            throw new TwitterException('Recieved wrong data.');
+            throw new TwitterException('Received wrong data.');
         }
         if (null === $data) {
             throw new TwitterException('Unable to decode data: ' . json_last_error());
