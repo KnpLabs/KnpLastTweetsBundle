@@ -58,6 +58,8 @@ class KnpLastTweetsExtension extends Extension
                     }
 
                     $container->setAlias('knp_last_tweets.last_tweets_secondary_fetcher', 'knp_last_tweets.last_tweets_fetcher.'.$driverOptions['method']);
+                } else {
+                    $container->setAlias('knp_last_tweets.last_tweets_secondary_fetcher', 'knp_last_tweets.last_tweets_fetcher.api');
                 }
             }
             if (!empty($driverOptions['cache_name'])) {
