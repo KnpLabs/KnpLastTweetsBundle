@@ -45,6 +45,13 @@ class KnpLastTweetsExtension extends Extension
         }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/fetcher_driver'));
+
+        if ($container->hasDefinition('inori_twitter_app')) {
+            $loader->load('oauth.yml');
+        } elseif($driver == 'oauth') {
+            throw new \InvalidArgumentException('You should install InoriTwitterBundle');
+        }
+
         $loader->load($driver . '.yml');
 
         if ('zend_cache' === $driver) {
@@ -53,6 +60,10 @@ class KnpLastTweetsExtension extends Extension
                 $driverOptions = $fetcherConfig['options'];
 
                 if (isset($driverOptions['method'])) {
+
+                    if (!$container->hasDefinition('inori_twitter_app') && $driverOptions['method'] == 'oauth') {
+                        throw new \InvalidArgumentException('You should install InoriTwitterBundle');
+                    }
                     if (!in_array($driverOptions['method'], array('oauth', 'api'))) {
                         throw new \InvalidArgumentException('Invalid knp_last_tweets secondary driver specified');
                     }
