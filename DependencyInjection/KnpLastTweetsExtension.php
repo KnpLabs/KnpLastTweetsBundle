@@ -46,7 +46,7 @@ class KnpLastTweetsExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/fetcher_driver'));
 
-        if ($container->hasDefinition('inori_twitter_app')) {
+        if (class_exists('Inori\TwitterAppBundle\Services\TwitterApp')) {
             $loader->load('oauth.yml');
         } elseif($driver == 'oauth') {
             throw new \InvalidArgumentException('You should install InoriTwitterBundle');
@@ -61,7 +61,7 @@ class KnpLastTweetsExtension extends Extension
 
                 if (isset($driverOptions['method'])) {
 
-                    if (!$container->hasDefinition('inori_twitter_app') && $driverOptions['method'] == 'oauth') {
+                    if (!class_exists('Inori\TwitterAppBundle\Services\TwitterApp') && $driverOptions['method'] == 'oauth') {
                         throw new \InvalidArgumentException('You should install InoriTwitterBundle');
                     }
                     if (!in_array($driverOptions['method'], array('oauth', 'api'))) {
