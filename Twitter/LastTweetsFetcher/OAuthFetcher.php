@@ -5,7 +5,7 @@ namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
-class OAuthFetcher extends ApiFetcher implements FetcherInterface
+class OAuthFetcher extends ApiFetcher
 {
     private $oauth;
 
