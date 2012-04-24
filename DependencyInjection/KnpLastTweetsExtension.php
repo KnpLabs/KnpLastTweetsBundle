@@ -23,7 +23,7 @@ class KnpLastTweetsExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         // Load twig
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('twig.yml');
 
         // Try to load Buzz service if not found
@@ -44,8 +44,8 @@ class KnpLastTweetsExtension extends Extension
             throw new \InvalidArgumentException('Invalid knp_last_tweets driver specified');
         }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/fetcher_driver'));
-        $loader->load($driver.'.yml');
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/fetcher_driver'));
+        $loader->load($driver . '.yml');
 
         if ('zend_cache' === $driver) {
             $driverOptions = array();
@@ -57,9 +57,9 @@ class KnpLastTweetsExtension extends Extension
                         throw new \InvalidArgumentException('Invalid knp_last_tweets secondary driver specified');
                     }
 
-                    $container->setAlias('knp_last_tweets.last_tweets_secondary_fetcher', 'knp_last_tweets.last_tweets_fetcher.'.$driverOptions['method']);
+                    $container->setAlias('knp_last_tweets.last_tweets_additional_fetcher', 'knp_last_tweets.last_tweets_fetcher.' . $driverOptions['method']);
                 } else {
-                    $container->setAlias('knp_last_tweets.last_tweets_secondary_fetcher', 'knp_last_tweets.last_tweets_fetcher.api');
+                    $container->setAlias('knp_last_tweets.last_tweets_additional_fetcher', 'knp_last_tweets.last_tweets_fetcher.api');
                 }
             }
             if (!empty($driverOptions['cache_name'])) {
@@ -67,6 +67,6 @@ class KnpLastTweetsExtension extends Extension
             }
         }
 
-        $container->setAlias('knp_last_tweets.last_tweets_fetcher', 'knp_last_tweets.last_tweets_fetcher.'.$driver);
+        $container->setAlias('knp_last_tweets.last_tweets_fetcher', 'knp_last_tweets.last_tweets_fetcher.' . $driver);
     }
 }
