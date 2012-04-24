@@ -1,0 +1,11 @@
+parameters:
+    knp_last_tweets.last_tweets_fetcher.oauth.class: Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\OAuthFetcher
+
+services:
+     oauth_browser:
+         alias: twitter_app
+
+     knp_last_tweets.last_tweets_fetcher.oauth:
+        class: %knp_last_tweets.last_tweets_fetcher.oauth.class%
+        arguments:
+            - "@oauth_browser"
