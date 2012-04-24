@@ -24,13 +24,13 @@
         "twig/twig":				">=1.6.5"
     },
 
-    "suggest": {
+    "require-dev": {
         "knplabs/knp-zend-cache-bundle": "*",
         "inori/twitter-app-bundle": "*"
     },
 
-    "repositories": {
-        "twitteroauth": {
+    "repositories": [
+        {
             "type": "package",
             "package": {
                 "name": "abraham/twitteroauth",
@@ -41,8 +41,52 @@
                     "reference": "master"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "zendframework/zend-cache",
+                "version": "2.0.0beta1",
+                "dist": {
+                    "url": "http://github.com/KnpLabs/zend-cache/zipball/master",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "git://github.com/KnpLabs/zend-cache.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "autoload": {
+                    "psr-0": {
+                        "Zend\\Cache": ""
+                    }
+                },
+                "target-dir": "Zend/Cache"
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "zendframework/zend-filter",
+                "version": "2.0.0beta1",
+                "dist": {
+                    "url": "http://github.com/KnpLabs/zend-filter/zipball/master",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "git://github.com/KnpLabs/zend-filter.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "autoload": {
+                    "psr-0": {
+                        "Zend\\Filter": ""
+                    }
+                },
+                "target-dir": "Zend/Filter"
+            }
         }
-    },
+    ],
 
     "autoload": {
         "psr-0": {
