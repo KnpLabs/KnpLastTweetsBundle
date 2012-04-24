@@ -48,13 +48,13 @@
                 "name": "zendframework/zend-cache",
                 "version": "2.0.0beta1",
                 "dist": {
-                    "url": "http://github.com/KnpLabs/zend-cache/zipball/master",
+                    "url": "http://packages.zendframework.com/get/Zend_Cache-2.0.0beta1.zip",
                     "type": "zip"
                 },
                 "source": {
-                    "url": "git://github.com/KnpLabs/zend-cache.git",
-                    "type": "git",
-                    "reference": "master"
+                    "url": "http://packages.zendframework.com/",
+                    "type": "pear",
+                    "reference": "zf2/Zend_Cache"
                 },
                 "autoload": {
                     "psr-0": {
@@ -70,13 +70,13 @@
                 "name": "zendframework/zend-filter",
                 "version": "2.0.0beta1",
                 "dist": {
-                    "url": "http://github.com/KnpLabs/zend-filter/zipball/master",
+                    "url": "http://packages.zendframework.com/get/Zend_Filter-2.0.0beta1.zip",
                     "type": "zip"
                 },
                 "source": {
-                    "url": "git://github.com/KnpLabs/zend-filter.git",
-                    "type": "git",
-                    "reference": "master"
+                    "url": "http://packages.zendframework.com/",
+                    "type": "pear",
+                    "reference": "zf2/Zend_Filter"
                 },
                 "autoload": {
                     "psr-0": {
