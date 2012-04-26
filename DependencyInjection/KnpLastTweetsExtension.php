@@ -69,7 +69,7 @@ class KnpLastTweetsExtension extends Extension
                         }
                     }
                     if (!in_array($driverOptions['method'], array('oauth', 'api'))) {
-                        throw new \InvalidArgumentException('You should install and enable InoriTwitterBundle');
+                        throw new \InvalidArgumentException('Invalid knp_last_tweets additional driver specified');
                     }
 
                     $container->setAlias('knp_last_tweets.last_tweets_additional_fetcher', 'knp_last_tweets.last_tweets_fetcher.' . $driverOptions['method']);
