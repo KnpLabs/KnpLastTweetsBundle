@@ -85,6 +85,6 @@ class KnpLastTweetsExtension extends Extension
 
     protected function oauthExists()
     {
-        return class_exists('Inori\TwitterAppBundle\Services\TwitterApp', false);
+        return class_exists('Inori\TwitterAppBundle\Services\TwitterApp');
     }
 }
