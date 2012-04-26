@@ -60,7 +60,7 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
         $extension = $this->getExtensionMock();
 
         $extension->expects($this->once())
-            ->method('isOauthExists')
+            ->method('oauthExists')
             ->will($this->returnValue(false));
 
         $config = $this->getConfig('oauth');
@@ -78,7 +78,7 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
         $extension = $this->getExtensionMock();
 
         $extension->expects($this->once())
-            ->method('isOauthExists')
+            ->method('oauthExists')
             ->will($this->returnValue(false));
 
         $config = $this->getConfig('zend_oauth');
@@ -91,7 +91,7 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
     {
         return $this->getMockBuilder('Knp\\Bundle\\LastTweetsBundle\\DependencyInjection\\KnpLastTweetsExtension')
             ->disableOriginalConstructor()
-            ->setMethods(array('isOauthExists'))
+            ->setMethods(array('oauthExists'))
             ->getMock();
     }
 
