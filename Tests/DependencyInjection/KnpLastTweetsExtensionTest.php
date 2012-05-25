@@ -10,6 +10,24 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldSetAliases()
+    {
+        $extension = $this->getExtensionMock();
+
+        $config = $this->getConfig('zend_oauth');
+        $container = new ContainerBuilder();
+
+        $extension->load($config, $container);
+
+        $this->assertTrue($container->hasDefinition('knp_last_tweets.last_tweets_fetcher'));
+        $this->assertTrue($container->hasDefinition('knp_last_tweets.last_tweets_fetcher.oauth'));
+        $this->assertTrue($container->hasDefinition('knp_last_tweets.last_tweets_fetcher.zend_cache'));
+        $this->assertTrue($container->hasDefinition('knp_last_tweets.last_tweets_additional_fetcher'));
+    }
+
+    /**
+     * @test
+     */
     public function shouldWorkWithArray()
     {
         $extension = $this->getExtensionMock();
