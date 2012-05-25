@@ -14,15 +14,19 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $extension = $this->getExtensionMock();
 
+        $extension->expects($this->once())
+            ->method('oauthExists')
+            ->will($this->returnValue(true));
+
         $config = $this->getConfig('zend_oauth');
         $container = new ContainerBuilder();
 
         $extension->load($config, $container);
 
-        $this->assertTrue($container->hasDefinition('knp_last_tweets.last_tweets_fetcher'));
+        $this->assertTrue($container->hasAlias('knp_last_tweets.last_tweets_fetcher'));
         $this->assertTrue($container->hasDefinition('knp_last_tweets.last_tweets_fetcher.oauth'));
         $this->assertTrue($container->hasDefinition('knp_last_tweets.last_tweets_fetcher.zend_cache'));
-        $this->assertTrue($container->hasDefinition('knp_last_tweets.last_tweets_additional_fetcher'));
+        $this->assertTrue($container->hasAlias('knp_last_tweets.last_tweets_additional_fetcher'));
     }
 
     /**
