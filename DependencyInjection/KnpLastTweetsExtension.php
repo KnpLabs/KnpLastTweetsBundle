@@ -67,6 +67,8 @@ class KnpLastTweetsExtension extends Extension
                         throw new \InvalidArgumentException('Invalid API driver specified ('.$driverOptions['method'].'), available are: "oauth", "api"');
                     }
 
+                    $loader->load($driverOptions['method'] . '.yml');
+
                     $container->setAlias('knp_last_tweets.last_tweets_additional_fetcher', 'knp_last_tweets.last_tweets_fetcher.' . $driverOptions['method']);
                 } else {
                     $container->setAlias('knp_last_tweets.last_tweets_additional_fetcher', 'knp_last_tweets.last_tweets_fetcher.api');
