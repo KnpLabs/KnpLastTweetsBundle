@@ -25,7 +25,7 @@ class OAuthFetcher extends ApiFetcher
         if (null === $data) {
             throw new TwitterException('Unable to decode data: ' . json_last_error());
         }
-        if (empty($data)) {
+        if ($data === false) {
             throw new TwitterException('Received empty data from api.twitter.com');
         }
         if (isset($data['error'])) {
