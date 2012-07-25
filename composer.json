@@ -6,6 +6,8 @@
     "homepage":    "http://github.com/KnpLabs/KnpLastTweetsBundle",
     "license":     "MIT",
 
+    "minimum-stability": "dev",
+
     "authors": [
         {
             "name": "KnpLabs Team",
