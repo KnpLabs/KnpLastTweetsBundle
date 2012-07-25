@@ -35,7 +35,11 @@
             "type": "package",
             "package": {
                 "name": "abraham/twitteroauth",
-                "version": "master-dev",
+                "version": "dev-master",
+                "dist": {
+                    "url": "https://github.com/abraham/twitteroauth/zipball/master",
+                    "type": "zip"
+                },
                 "source": {
                     "url": "git://github.com/abraham/twitteroauth.git",
                     "type": "git",
