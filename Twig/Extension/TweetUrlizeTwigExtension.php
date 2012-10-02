@@ -11,9 +11,9 @@ class TweetUrlizeTwigExtension extends \Twig_Extension
         );
     }
 
-    public function filterTweet($text)
+    public function filterTweet($text, $target = null)
     {
-        return self::urlize($text);
+        return self::urlize($text, $target);
     }
 
     /**
@@ -21,19 +21,20 @@ class TweetUrlizeTwigExtension extends \Twig_Extension
      * Should be moved to a Renderer class in order for it to be used by 
      * something else than twig
      * 
-     * @param string A tweet
-     * @return the urlized tweed
+     * @param string $text A tweet
+     * @param string $target Link target attribute
+     * @return string the urlized tweed
      */
-    static public function urlize($text)
+    static public function urlize($text, $target = null)
     {
-        $text = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t< ]*)#", "\\1<a href=\"\\2\">\\2</a>", $text);
-        $text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r< ]*)#", "\\1<a href=\"http://\\2\">\\2</a>", $text);
-        $text = preg_replace("/@(\w+)/", "<a href=\"http://twitter.com/\\1\">@\\1</a>", $text);
-        $text = preg_replace("/([^&]|^)#(\w+)/", "\\1<a href=\"http://twitter.com/search/\\2\">#\\2</a>", $text);
+        $target = $target === null ? '' : ' target="' . $target . '"';
+        $text = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t< ]*)#", "\\1<a href=\"\\2\"".$target.">\\2</a>", $text);
+        $text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r< ]*)#", "\\1<a href=\"http://\\2\"".$target.">\\2</a>", $text);
+        $text = preg_replace("/@(\w+)/", "<a href=\"http://twitter.com/\\1\"".$target.">@\\1</a>", $text);
+        $text = preg_replace("/([^&]|^)#(\w+)/", "\\1<a href=\"http://twitter.com/search/\\2\"".$target.">#\\2</a>", $text);
 
         return $text;
     }
-
 
     public function getName()
     {
