@@ -11,8 +11,9 @@ interface FetcherCacheableInterface extends FetcherInterface
      *
      * @throws TwitterException     When we do not manage to get a valid answer from the twitter API
      *
-     * @param string Name of the user
-     * @param int Max number of tweets
+     * @param string  $username Name of the user
+     * @param integer $limit    Max number of tweets
+     *
      * @return array
      */
     public function forceFetch($username, $limit = 10);

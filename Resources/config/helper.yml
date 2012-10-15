@@ -1,0 +1,6 @@
+services:
+    templating.helper.last_tweets:
+        public: false
+        class: Knp\Bundle\LastTweetsBundle\Helper\TweetUrlizeHelper
+        tags:
+          - { name: templating.helper }

@@ -1,17 +1,17 @@
 <?php
 
-namespace Knp\Bundle\LastTweetsBundle\Tests\Twig\Extension;
+namespace Knp\Bundle\LastTweetsBundle\Tests\Helper;
 
-use Knp\Bundle\LastTweetsBundle\Twig\Extension\TweetUrlizeTwigExtension;
+use Knp\Bundle\LastTweetsBundle\Helper\TweetUrlizeHelper;
 
-class TweetUrlizeTwigExtensionTest extends \PHPUnit_Framework_TestCase
+class TweetUrlizeHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getUrlizedData
      */
     public function testUrlize($expected, $text)
     {
-        $this->assertEquals($expected, TweetUrlizeTwigExtension::urlize($text));
+        $this->assertEquals($expected, TweetUrlizeHelper::urlize($text));
     }
 
     public function getUrlizedData()

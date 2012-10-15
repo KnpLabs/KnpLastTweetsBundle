@@ -9,17 +9,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\FetcherCacheableInterface;
 
 /**
  * Fetch last tweets and cache them.
- *
  */
 class ForceFetchLastTweetsCommand extends ContainerAwareCommand
 {
-    private $generator;
-
     /**
      * @see Command
      */
@@ -44,33 +42,32 @@ EOT
         ;
     }
 
-    /**
-     * @see Command
-     *
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $twitter = $this->getContainer()->get('knp_last_tweets.last_tweets_fetcher');
-        
+
         if (!$twitter instanceof FetcherCacheableInterface) {
             $output->writeln(
                 '<error>You\'re using the twitter fetcher driver "'.get_class($twitter)."\"\n".
                 "This command only works if the driver is cacheable.\n".
                 'Use zend_cache for example.</error>');
-            return;
+            return 1;
         }
 
         $usernames = $input->getArgument('username');
-        
+
         $limit = $input->getOption('limit');
-        
+
         $output->writeln('Fetching the <info>'.$limit.'</info> last tweets of <info>' . implode(', ', $usernames) . '</info>');
 
         try {
-            $tweets = $twitter->forceFetch($usernames, $limit, true);
+            $twitter->forceFetch($usernames, $limit, true);
         } catch (TwitterException $e) {
             $output->writeln('<error>Unable to fetch last tweets: '.$e->getMessage().'</error>');
-        }
-    }
 
+            return 1;
+        }
+
+        return 0;
+    }
 }

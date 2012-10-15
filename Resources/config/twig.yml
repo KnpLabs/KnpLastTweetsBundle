@@ -1,5 +1,8 @@
 services:
     twig.extension.knp_last_tweets.twig:
+        public: false
         class: Knp\Bundle\LastTweetsBundle\Twig\Extension\TweetUrlizeTwigExtension
+        arguments:
+            - @templating.helper.last_tweets
         tags:
-          - { name: twig.extension }
+            - { name: twig.extension }

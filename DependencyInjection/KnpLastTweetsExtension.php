@@ -24,6 +24,7 @@ class KnpLastTweetsExtension extends Extension
 
         // Load twig
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('helper.yml');
         $loader->load('twig.yml');
 
         // Try to load Buzz service if not found

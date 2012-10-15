@@ -2,7 +2,6 @@
 
 namespace Knp\Bundle\LastTweetsBundle\Tests\DependencyInjection;
 
-use Knp\Bundle\LastTweetsBundle\DependencyInjection\KnpLastTweetsExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
@@ -180,5 +179,4 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
 
         return $config;
     }
-
 }

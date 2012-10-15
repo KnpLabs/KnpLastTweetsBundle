@@ -2,26 +2,19 @@
 
 namespace Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher;
 
-use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
 use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
 class ArrayFetcher implements FetcherInterface
 {
-    protected $data;
-    
+    private $data;
+
     public function __construct(array $data = array())
     {
         $this->data = $data;
     }
-    
+
     /**
-     * Fetch the last tweets of a user on twitter
-     *
-     * @throws TwitterException     When we do not manage to get a valid answer from the twitter API
-     *
-     * @param string Name of the user
-     * @param int Max number of tweets
-     * @return array
+     * {@inheritDoc}
      */
     public function fetch($username, $limit = 10)
     {
