@@ -109,7 +109,7 @@ knp_last_tweets:
         driver: zend_cache
         options:
             cache_name: knp_last_tweets
-            method: api // or oauth
+            method: api # or oauth
 ```
 
 This will only call the twitter api after a minimum of 300 seconds.
