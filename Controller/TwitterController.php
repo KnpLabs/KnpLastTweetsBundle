@@ -13,7 +13,7 @@ class TwitterController extends Controller
     public function lastTweetsAction($username, $limit = 10, $age = null)
     {
         /* @var $twitter FetcherInterface */
-        $twitter = $this->get('knp_last_tweets.last_tweets_fetcher');
+        $twitter = $this->container->get('knp_last_tweets.last_tweets_fetcher');
 
         try {
             $tweets = $twitter->fetch($username, $limit);

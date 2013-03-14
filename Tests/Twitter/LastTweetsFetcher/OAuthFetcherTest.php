@@ -3,7 +3,6 @@
 namespace Knp\Bundle\LastTweetsBundle\Tests\Twitter\LastTweetsFetcher;
 
 use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\OAuthFetcher;
-use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
 class OAuthFetcherTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +38,7 @@ class OAuthFetcherTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     * @expectedException \Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
      */
     public function shouldNotFetchTweetsWithBadResponse()
     {
@@ -52,7 +51,7 @@ class OAuthFetcherTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     * @expectedException \Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
      */
     public function shouldNotFetchTweetsWithEmptyResponse()
     {
@@ -65,7 +64,7 @@ class OAuthFetcherTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
+     * @expectedException \Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException
      */
     public function shouldNotFetchTweetsWithErrorResponse()
     {

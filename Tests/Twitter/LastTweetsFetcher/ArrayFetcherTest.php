@@ -3,7 +3,6 @@
 namespace Knp\Bundle\LastTweetsBundle\Tests\Twitter\LastTweetsFetcher;
 
 use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\ArrayFetcher;
-use Knp\Bundle\LastTweetsBundle\Twitter\Tweet;
 
 class ArrayFetcherTest extends \PHPUnit_Framework_TestCase
 {

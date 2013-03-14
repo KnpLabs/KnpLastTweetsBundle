@@ -7,11 +7,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Knp\Bundle\LastTweetsBundle\Twitter\Exception\TwitterException;
-use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\FetcherCacheableInterface;
+use Knp\Bundle\LastTweetsBundle\Twitter\LastTweetsFetcher\FetcherInterface;
 
 /**
  * Fetch last tweets and cache them.
@@ -44,24 +43,25 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /* @var FetcherInterface $twitter */
         $twitter = $this->getContainer()->get('knp_last_tweets.last_tweets_fetcher');
 
-        if (!$twitter instanceof FetcherCacheableInterface) {
+        if ($twitter->hasCache()) {
             $output->writeln(
-                '<error>You\'re using the twitter fetcher driver "'.get_class($twitter)."\"\n".
-                "This command only works if the driver is cacheable.\n".
-                'Use zend_cache for example.</error>');
+                "<error>You're using the twitter fetcher without cache\n".
+                'This command only works if the driver has cache set.</error>'
+            );
+
             return 1;
         }
 
+        $limit     = $input->getOption('limit');
         $usernames = $input->getArgument('username');
-
-        $limit = $input->getOption('limit');
 
         $output->writeln('Fetching the <info>'.$limit.'</info> last tweets of <info>' . implode(', ', $usernames) . '</info>');
 
         try {
-            $twitter->forceFetch($usernames, $limit, true);
+            $twitter->fetch($usernames, $limit, true);
         } catch (TwitterException $e) {
             $output->writeln('<error>Unable to fetch last tweets: '.$e->getMessage().'</error>');
 

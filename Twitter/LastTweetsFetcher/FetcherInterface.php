@@ -11,10 +11,16 @@ interface FetcherInterface
      *
      * @param string  $username Name of the user
      * @param integer $limit    Max number of tweets
+     * @param boolean $force    Ignore cache if true
      *
      * @return array
      *
      * @throws TwitterException When we do not manage to get a valid answer from the twitter API
      */
-    public function fetch($username, $limit = 10);
+    public function fetch($username, $limit = 10, $force = false);
+
+    /**
+     * @return boolean
+     */
+    public function hasCache();
 }

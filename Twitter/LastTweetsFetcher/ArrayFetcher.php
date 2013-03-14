@@ -16,7 +16,15 @@ class ArrayFetcher implements FetcherInterface
     /**
      * {@inheritDoc}
      */
-    public function fetch($username, $limit = 10)
+    public function hasCache()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function fetch($username, $limit = 10, $force = false)
     {
         $tweets = array();
 

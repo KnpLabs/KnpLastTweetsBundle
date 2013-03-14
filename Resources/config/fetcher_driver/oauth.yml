@@ -6,6 +6,6 @@ services:
          alias: twitter_app
 
      knp_last_tweets.last_tweets_fetcher.oauth:
-        class: %knp_last_tweets.last_tweets_fetcher.oauth.class%
-        arguments:
-            - "@oauth_browser"
+         class: %knp_last_tweets.last_tweets_fetcher.oauth.class%
+         arguments:
+             - "@oauth_browser"

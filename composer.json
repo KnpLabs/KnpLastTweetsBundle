@@ -18,86 +18,30 @@
     ],
 
     "require": {
-        "php":                      ">=5.3.2",
-        "symfony/framework-bundle": ">=2.0,<2.3-dev",
-        "symfony/yaml":             ">=2.0,<2.3-dev",
-        "kriswallsmith/buzz":       ">=v0.5",
-        "twig/twig":                ">=1.6.5"
+        "php":                      ">=5.3.3",
+        "symfony/framework-bundle": "~2.0",
+        "symfony/yaml":             "~2.0",
+        "kriswallsmith/buzz":       "~0.7",
+        "twig/twig":                "~1.6.5"
     },
 
     "require-dev": {
-        "knplabs/knp-zend-cache-bundle": "*",
-        "inori/twitter-app-bundle": "*"
+        "doctrine/cache":           "*@dev",
+        "zendframework/zend-cache": "~2.0",
+        "inori/twitter-app-bundle": "*@dev",
+        "abraham/twitteroauth":     "*@dev"
     },
 
     "repositories": [
         {
-            "type": "package",
-            "package": {
-                "name": "abraham/twitteroauth",
-                "version": "dev-master",
-                "dist": {
-                    "url": "https://github.com/abraham/twitteroauth/zipball/master",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "git://github.com/abraham/twitteroauth.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "zendframework/zend-cache",
-                "version": "2.0.0beta1",
-                "dist": {
-                    "url": "http://packages.zendframework.com/get/Zend_Cache-2.0.0beta1.zip",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "http://packages.zendframework.com/",
-                    "type": "pear",
-                    "reference": "zf2/Zend_Cache"
-                },
-                "autoload": {
-                    "psr-0": {
-                        "Zend\\Cache": ""
-                    }
-                },
-                "target-dir": "Zend/Cache"
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "zendframework/zend-filter",
-                "version": "2.0.0beta1",
-                "dist": {
-                    "url": "http://packages.zendframework.com/get/Zend_Filter-2.0.0beta1.zip",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "http://packages.zendframework.com/",
-                    "type": "pear",
-                    "reference": "zf2/Zend_Filter"
-                },
-                "autoload": {
-                    "psr-0": {
-                        "Zend\\Filter": ""
-                    }
-                },
-                "target-dir": "Zend/Filter"
-            }
+            "type": "composer",
+            "url": "http://packages.zendframework.com/"
         }
     ],
 
-    "minimum-stability": "dev",
-
     "autoload": {
         "psr-0": {
-            "Knp\\Bundle\\LastTweetsBundle": "."
+            "Knp\\Bundle\\LastTweetsBundle\\": ""
         }
     },
 

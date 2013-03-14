@@ -6,6 +6,6 @@ services:
          alias: buzz
 
      knp_last_tweets.last_tweets_fetcher.api:
-        class: %knp_last_tweets.last_tweets_fetcher.api.class%
-        arguments:
-            - "@api_browser"
+         class: %knp_last_tweets.last_tweets_fetcher.api.class%
+         arguments:
+             - "@api_browser"
