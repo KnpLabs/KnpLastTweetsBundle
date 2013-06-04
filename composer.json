@@ -27,7 +27,8 @@
 
     "require-dev": {
         "knplabs/knp-zend-cache-bundle": "*",
-        "inori/twitter-app-bundle": "*"
+        "inori/twitter-app-bundle": "*",
+        "doctrine/cache": "*"
     },
 
     "repositories": [
