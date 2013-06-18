@@ -1,6 +1,10 @@
 # KnpLastTweetsBundles
 
-## Warning, the bundle is working only with OAuth driver because if [twitter api v.1 retirement](https://dev.twitter.com/blog/api-v1-is-retired)
+## Warning
+
+the bundle is working only with OAuth driver because of [twitter api v.1 retirement](https://dev.twitter.com/blog/api-v1-is-retired)
+old users needs update ``abraham/twitteroauth`` using ``composer update abraham/twitteroauth``
+
 
 This Symfony2 bundle will allow you to easily add a visual widget with the
 last tweets of the Twitter users to your page.
