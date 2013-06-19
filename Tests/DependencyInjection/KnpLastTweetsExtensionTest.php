@@ -16,6 +16,9 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
         $extension->expects($this->once())
             ->method('oauthExists')
             ->will($this->returnValue(true));
+        $extension->expects($this->once())
+            ->method('zendCacheExists')
+            ->will($this->returnValue(true));
 
         $config = $this->getConfig('zend_oauth');
         $container = new ContainerBuilder();
@@ -46,9 +49,50 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldWorkWithZend()
+    public function shouldWorkWithDoctrineCache()
     {
         $extension = $this->getExtensionMock();
+
+        $config = $this->getConfig('doctrine');
+        $container = new ContainerBuilder();
+
+        $extension->expects($this->once())
+            ->method('doctrineCacheExists')
+            ->will($this->returnValue(true));
+
+        $extension->load($config, $container);
+
+        $this->assertTrue($container->hasDefinition('knp_last_tweets.last_tweets_fetcher.doctrine_cache'));
+    }
+
+    /**
+     * @test
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function shouldNotWorkWithoutDoctrineCache()
+    {
+        $extension = $this->getExtensionMock();
+
+        $config = $this->getConfig('doctrine');
+        $container = new ContainerBuilder();
+
+        $extension->expects($this->once())
+            ->method('doctrineCacheExists')
+            ->will($this->returnValue(false));
+
+        $extension->load($config, $container);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldWorkWithZendCache()
+    {
+        $extension = $this->getExtensionMock();
+
+        $extension->expects($this->once())
+            ->method('zendCacheExists')
+            ->will($this->returnValue(true));
 
         $config = $this->getConfig('zend');
         $container = new ContainerBuilder();
@@ -60,7 +104,7 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function shouldNotWorkWithBadDriver()
     {
@@ -74,7 +118,7 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function shouldNotWorkWithoutOauth()
     {
@@ -92,11 +136,15 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function shouldNotWorkWithZendWithoutOauth()
     {
         $extension = $this->getExtensionMock();
+
+        $extension->expects($this->once())
+            ->method('zendCacheExists')
+            ->will($this->returnValue(true));
 
         $extension->expects($this->once())
             ->method('oauthExists')
@@ -112,7 +160,7 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
     {
         return $this->getMockBuilder('Knp\\Bundle\\LastTweetsBundle\\DependencyInjection\\KnpLastTweetsExtension')
             ->disableOriginalConstructor()
-            ->setMethods(array('oauthExists'))
+            ->setMethods(array('oauthExists', 'zendCacheExists', 'doctrineCacheExists'))
             ->getMock();
     }
 
@@ -156,6 +204,19 @@ class KnpLastTweetsExtensionTest extends \PHPUnit_Framework_TestCase
                             'driver' => 'zend_cache',
                             'options' => array(
                                 'cache_name' => 'knp_last_tweets'
+                            )
+                        )
+                    )
+                );
+                break;
+
+            case 'doctrine':
+                $config = array(
+                    'knp_last_tweets' => array(
+                        'fetcher' => array(
+                            'driver' => 'doctrine_cache',
+                            'options' => array(
+                                'cache_service' => 'doctrine.cache.service'
                             )
                         )
                     )
