@@ -88,6 +88,23 @@ knp_last_tweets:
         driver: oauth
 ```
 
+### Doctrine Cache driver
+
+The `doctrine_driver` uses [DoctrineCache](https://github.com/doctrine/cache).
+First you should configure and install it.
+
+Then you are freely to set it in config:
+```jinja
+# app/config.yml
+knp_last_tweets:
+    fetcher:
+        driver: doctrine_cache
+        options:
+            cache_service: my_doctrine_cache_service #must be a valid doctrine cache
+```
+
+you could use [LiipDoctrineCacheBundle](https://github.com/liip/LiipDoctrineCacheBundle) for configuring your caches.
+
 ### Zend_Cache driver
 
 The `zend_cache` driver uses Zend_Cache to cache the last tweets in a Zend_Cache_Backend (file, APC, memcached…).
@@ -146,7 +163,7 @@ knp_last_tweets:
 ### Recommendations
 
 * Use the `array` driver in development (edit your `app/config_dev.yml` file)
-* Use the `zend_cache` driver in production (edit your `app/config.yml` file)
+* Use the `zend_cache` or `doctrine_cache` driver in production (edit your `app/config.yml` file)
 * Use the `force-fetch` command in a cron job in production
 * Use HTTP caching if you know what this is about and if performance is really important to you!
 * Use the `oauth` driver if you have problems with limits.
