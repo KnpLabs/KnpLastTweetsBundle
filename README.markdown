@@ -190,3 +190,7 @@ and use the following code in your templates:
 ## Credits
 
 * Initial work has been done by [KnpLabs](http://knplabs.com/)
+
+## License
+
+`KnpLastTweetsBundle` is released under the MIT License. See the bundled LICENSE file for details.
