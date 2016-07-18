@@ -2,7 +2,7 @@
 
 ## Warning
 
-the bundle is working only with OAuth driver because of [twitter api v.1 retirement](https://dev.twitter.com/blog/api-v1-is-retired)
+the bundle is working only with OAuth driver because of [twitter api v.1 retirement](https://blog.twitter.com/2013/api-v1-is-retired)
 old users needs update ``abraham/twitteroauth`` using ``composer update abraham/twitteroauth``
 
 
