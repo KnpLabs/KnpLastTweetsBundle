@@ -16,7 +16,7 @@ class TweetUrlizeTwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'knp_tweet_urlize' => new \Twig_Filter_Method($this, 'filterTweet', array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'knp_tweet_urlize' => new \Twig_SimpleFilter('knp_tweet_urlize', array($this, 'filterTweet'), array('pre_escape' => 'html', 'is_safe' => array('html'))),
         );
     }
 
